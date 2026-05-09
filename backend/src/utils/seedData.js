@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const path = require("path");
 const Expert = require("../models/Expert");
+const Booking = require("../models/Booking");
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -108,6 +109,7 @@ const experts = [
 mongoose
   .connect(process.env.MONGO_URI)
   .then(async () => {
+    await Booking.deleteMany(); // add this to clear bookings before seeding experts
     await Expert.deleteMany();
     await Expert.insertMany(experts);
     console.log("✅ Seeded successfully!");

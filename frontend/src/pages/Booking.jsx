@@ -100,6 +100,21 @@ const Booking = () => {
           marginBottom: "24px",
         }}
       >
+        <button
+          onClick={() => navigate(-1)}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#4F46E5",
+            cursor: "pointer",
+            fontSize: "14px",
+            marginBottom: "16px",
+            padding: 0,
+          }}
+        >
+          ← Back
+        </button>
+              
         <h2 style={{ marginTop: 0, color: "#111827" }}>
           Complete Your Booking
         </h2>

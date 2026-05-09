@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
+import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ const MyBookings = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
+  const navigate = useNavigate();
 
   const fetchBookings = async (e) => {
     e.preventDefault();
@@ -28,10 +30,43 @@ const MyBookings = () => {
     } finally {
       setLoading(false);
     }
-  };
+    };
+    
+    const cancelBooking = async (bookingId) => {
+      if (!window.confirm("Are you sure you want to cancel this booking?"))
+        return;
+      try {
+        await API.patch(`/bookings/${bookingId}/status`, {
+          status: "cancelled",
+        });
+        setBookings((prev) =>
+          prev.map((b) =>
+            b._id === bookingId ? { ...b, status: "cancelled" } : b,
+          ),
+        );
+      } catch (err) {
+        alert("Failed to cancel booking. Please try again.");
+      }
+    };
 
   return (
     <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+
+      <button
+        onClick={() => navigate("/")}
+        style={{
+          background: "none",
+          border: "none",
+          color: "#4F46E5",
+          cursor: "pointer",
+          fontSize: "14px",
+          marginBottom: "16px",
+          padding: 0,
+        }}
+      >
+        ← Back to Experts
+      </button>
+
       <h2 style={{ marginBottom: "24px", color: "#111827" }}>My Bookings</h2>
 
       {/* Email Search Form */}
@@ -162,6 +197,25 @@ const MyBookings = () => {
                       📝 {booking.notes}
                     </p>
                   )}
+
+                  {booking.status !== "completed" &&
+                    booking.status !== "cancelled" && (
+                      <button
+                        onClick={() => cancelBooking(booking._id)}
+                        style={{
+                          marginTop: "12px",
+                          padding: "6px 14px",
+                          background: "#FEE2E2",
+                          color: "#991B1B",
+                          border: "none",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          fontSize: "13px",
+                        }}
+                      >
+                        Cancel Booking
+                      </button>
+                    )}
                 </div>
               ))}
             </div>

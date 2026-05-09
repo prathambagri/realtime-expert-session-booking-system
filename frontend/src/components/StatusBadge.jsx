@@ -3,6 +3,7 @@ const StatusBadge = ({ status }) => {
     pending: { background: "#FEF3C7", color: "#92400E" },
     confirmed: { background: "#D1FAE5", color: "#065F46" },
     completed: { background: "#DBEAFE", color: "#1E40AF" },
+    cancelled: { background: "#FEE2E2", color: "#991B1B" },
   };
 
   return (

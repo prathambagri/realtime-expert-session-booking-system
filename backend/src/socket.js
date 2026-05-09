@@ -16,4 +16,10 @@ const emitSlotBooked = (expertId, date, time) => {
   }
 };
 
-module.exports = { initSocket, emitSlotBooked };
+const emitSlotFreed = (expertId, date, time) => {
+  if (io) {
+    io.emit("slotFreed", { expertId, date, time });
+  }
+};
+
+module.exports = { initSocket, emitSlotBooked, emitSlotFreed };

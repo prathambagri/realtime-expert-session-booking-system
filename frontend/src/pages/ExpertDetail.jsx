@@ -30,21 +30,42 @@ const ExpertDetail = () => {
   }, [id]);
 
   // real-time slot update
-  useSocket((data) => {
-    if (data.expertId === id) {
-      setExpert((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          availableSlots: prev.availableSlots.map((slot) =>
-            slot.date === data.date && slot.time === data.time
-              ? { ...slot, isBooked: true }
-              : slot,
-          ),
-        };
-      });
-    }
-  });
+  useSocket(
+      (data) => {
+          // slot booked event
+      if (String(data.expertId) === String(id)) {
+        setExpert((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            availableSlots: prev.availableSlots.map((slot) =>
+              slot.date === data.date && slot.time === data.time
+                ? { ...slot, isBooked: true }
+                : slot,
+            ),
+          };
+        });
+      }
+    },
+      (data) => {
+        // slot freed event
+         console.log("slotFreed received:", data);
+         console.log("current id:", id);
+      if (String(data.expertId) === String(id)) {
+        setExpert((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            availableSlots: prev.availableSlots.map((slot) =>
+              slot.date === data.date && slot.time === data.time
+                ? { ...slot, isBooked: false }
+                : slot,
+            ),
+          };
+        });
+      }
+    },
+  );
 
   if (loading)
     return (
@@ -68,7 +89,24 @@ const ExpertDetail = () => {
     );
 
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+          
+      <button
+        onClick={() => navigate("/")}
+        style={{
+          background: "none",
+          border: "none",
+          color: "#4F46E5",
+          cursor: "pointer",
+          fontSize: "14px",
+          marginBottom: "16px",
+          padding: 0,
+        }}
+      >
+        ← Back to Experts
+          </button>
+          
+
       {/* Expert Info */}
       <div
         style={{

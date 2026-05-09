@@ -1,7 +1,7 @@
 
 const Booking = require("../models/Booking");
 const Expert = require("../models/Expert");
-const { emitSlotBooked } = require("../socket");
+const { emitSlotBooked, emitSlotFreed } = require("../socket");
 
 exports.createBooking = async (req, res) => {
   try {
@@ -39,7 +39,7 @@ exports.createBooking = async (req, res) => {
       notes,
     });
 
-    emitSlotBooked(expertId, date, timeSlot);
+    emitSlotBooked(String(expertId), date, timeSlot);
 
     res.status(201).json(booking);
   } catch (err) {
@@ -50,15 +50,31 @@ exports.createBooking = async (req, res) => {
 exports.updateBookingStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    if (!["pending", "confirmed", "completed"].includes(status)) {
+    if (!["pending", "confirmed", "completed", "cancelled"].includes(status)) {
       return res.status(400).json({ error: "Invalid status" });
     }
+
     const booking = await Booking.findByIdAndUpdate(
       req.params.id,
       { status },
       { new: true },
     );
+
     if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    // if cancelled, free the slot and notify all users
+    if (status === "cancelled") {
+      await Expert.findOneAndUpdate(
+        {
+          _id: booking.expertId,
+          "availableSlots.date": booking.date,
+          "availableSlots.time": booking.timeSlot,
+        },
+        { $set: { "availableSlots.$.isBooked": false } },
+      );
+      emitSlotFreed(String(booking.expertId), booking.date, booking.timeSlot);
+    }
+
     res.json(booking);
   } catch (err) {
     res.status(500).json({ error: err.message });
