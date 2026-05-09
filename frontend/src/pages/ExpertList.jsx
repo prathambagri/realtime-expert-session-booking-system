@@ -20,7 +20,6 @@ const ExpertList = () => {
       const params = { page: pg, limit: 6 };
       if (s.trim()) params.search = s.trim();
       if (cat !== "All") params.category = cat;
-
       const res = await API.get("/experts", { params });
       setExperts(res.data.experts);
       setTotalPages(res.data.totalPages);
@@ -56,50 +55,109 @@ const ExpertList = () => {
 
   return (
     <div>
-      <h2 style={{ marginBottom: "24px", color: "#111827" }}>Find an Expert</h2>
-
-      {/* Search and Filter */}
+      {/* Hero */}
       <div
         style={{
-          display: "flex",
-          gap: "12px",
-          marginBottom: "24px",
-          flexWrap: "wrap",
+          background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
+          borderRadius: "20px",
+          padding: "48px 40px",
+          marginBottom: "32px",
+          color: "#fff",
+          textAlign: "center",
         }}
       >
+        <h1
+          style={{
+            fontSize: "36px",
+            fontWeight: "800",
+            marginBottom: "12px",
+            letterSpacing: "-0.5px",
+          }}
+        >
+          Find Your Perfect Expert
+        </h1>
+        <p style={{ fontSize: "16px", opacity: 0.85, marginBottom: "32px" }}>
+          Book 1-on-1 sessions with top professionals in Design, Engineering,
+          Marketing & Finance
+        </p>
+
+        {/* Search Bar */}
         <form
           onSubmit={handleSearch}
-          style={{ display: "flex", gap: "8px", flex: 1 }}
+          style={{
+            display: "flex",
+            gap: "8px",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
         >
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name..."
+            placeholder="Search by expert name..."
             style={{
               flex: 1,
-              padding: "10px",
-              borderRadius: "8px",
-              border: "1px solid #D1D5DB",
-              fontSize: "14px",
+              padding: "14px 20px",
+              borderRadius: "12px",
+              border: "none",
+              fontSize: "15px",
+              outline: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
             }}
           />
           <button
             type="submit"
             style={{
-              padding: "10px 20px",
-              background: "#4F46E5",
-              color: "#fff",
+              padding: "14px 28px",
+              background: "#fff",
+              color: "#4F46E5",
               border: "none",
-              borderRadius: "8px",
+              borderRadius: "12px",
               cursor: "pointer",
-              fontSize: "14px",
+              fontSize: "15px",
+              fontWeight: "700",
             }}
           >
             Search
           </button>
+        </form>
+      </div>
 
+      {/* Filter Bar */}
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          marginBottom: "24px",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        <span style={{ fontSize: "14px", color: "#6B7280", fontWeight: "500" }}>
+          Filter:
+        </span>
+        {CATEGORIES.map((cat) => (
           <button
-            type="button"
+            key={cat}
+            onClick={() => handleCategoryChange({ target: { value: cat } })}
+            style={{
+              padding: "8px 20px",
+              borderRadius: "999px",
+              border: "1.5px solid",
+              borderColor: category === cat ? "#4F46E5" : "#E5E7EB",
+              background: category === cat ? "#4F46E5" : "#fff",
+              color: category === cat ? "#fff" : "#374151",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+              transition: "all 0.2s",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+        {(search || category !== "All") && (
+          <button
             onClick={() => {
               setSearch("");
               setCategory("All");
@@ -107,44 +165,25 @@ const ExpertList = () => {
               fetchExperts("All", 1, "");
             }}
             style={{
-              padding: "10px 16px",
-              background: "#F3F4F6",
-              color: "#374151",
-              border: "1px solid #D1D5DB",
-              borderRadius: "8px",
+              padding: "8px 16px",
+              borderRadius: "999px",
+              border: "1.5px solid #FCA5A5",
+              background: "#FEE2E2",
+              color: "#991B1B",
               cursor: "pointer",
               fontSize: "14px",
+              fontWeight: "500",
             }}
           >
-            Clear
+            ✕ Clear
           </button>
-        </form>
-
-        <select
-          value={category}
-          onChange={handleCategoryChange}
-          style={{
-            padding: "10px",
-            borderRadius: "8px",
-            border: "1px solid #D1D5DB",
-            fontSize: "14px",
-            background: "#fff",
-            minWidth: "140px",
-            color: "#374151",
-            cursor: "pointer",
-          }}
-        >
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+        )}
       </div>
 
       {/* Loading */}
       {loading && (
-        <div style={{ textAlign: "center", padding: "60px", color: "#6B7280" }}>
+        <div style={{ textAlign: "center", padding: "80px", color: "#6B7280" }}>
+          <div style={{ fontSize: "32px", marginBottom: "12px" }}>⏳</div>
           Loading experts...
         </div>
       )}
@@ -156,7 +195,7 @@ const ExpertList = () => {
             background: "#FEE2E2",
             color: "#991B1B",
             padding: "16px",
-            borderRadius: "8px",
+            borderRadius: "12px",
             marginBottom: "16px",
           }}
         >
@@ -169,16 +208,17 @@ const ExpertList = () => {
         <>
           {experts.length === 0 ? (
             <div
-              style={{ textAlign: "center", padding: "60px", color: "#6B7280" }}
+              style={{ textAlign: "center", padding: "80px", color: "#6B7280" }}
             >
+              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🔍</div>
               No experts found.
             </div>
           ) : (
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                gap: "20px",
+                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gap: "24px",
                 marginBottom: "32px",
               }}
             >
@@ -191,39 +231,50 @@ const ExpertList = () => {
           {/* Pagination */}
           {totalPages > 1 && (
             <div
-              style={{ display: "flex", justifyContent: "center", gap: "8px" }}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "8px",
+              }}
             >
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                // Prev button style
                 style={{
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  border: "1px solid #D1D5DB",
-                  background: page === 1 ? "#F3F4F6" : "#fff",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  border: "1.5px solid #E5E7EB",
+                  background: page === 1 ? "#F9FAFB" : "#fff",
+                  color: page === 1 ? "#9CA3AF" : "#374151",
                   cursor: page === 1 ? "not-allowed" : "pointer",
-                  color: "#374151",
+                  fontWeight: "500",
                 }}
               >
                 ← Prev
               </button>
-
-              <span style={{ padding: "8px 16px", color: "#6B7280" }}>
-                Page {page} of {totalPages}
+              <span
+                style={{
+                  padding: "10px 20px",
+                  background: "#4F46E5",
+                  color: "#fff",
+                  borderRadius: "10px",
+                  fontWeight: "600",
+                }}
+              >
+                {page} / {totalPages}
               </span>
-
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
-                // Next button style
                 style={{
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  border: "1px solid #D1D5DB",
-                  background: page === totalPages ? "#F3F4F6" : "#fff",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  border: "1.5px solid #E5E7EB",
+                  background: page === totalPages ? "#F9FAFB" : "#fff",
+                  color: page === totalPages ? "#9CA3AF" : "#374151",
                   cursor: page === totalPages ? "not-allowed" : "pointer",
-                  color: "#374151",
+                  fontWeight: "500",
                 }}
               >
                 Next →

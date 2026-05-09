@@ -7,35 +7,66 @@ import MyBookings from "./pages/MyBookings";
 const App = () => {
   return (
     <BrowserRouter>
-      <div style={{ minHeight: "100vh", background: "#F9FAFB" }}>
+      <div style={{ minHeight: "100vh", background: "#F3F4F6" }}>
+        {/* Navbar */}
         <nav
           style={{
-            background: "#fff",
-            borderBottom: "1px solid #E5E7EB",
-            padding: "16px 32px",
+            background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
+            padding: "0 32px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            height: "64px",
+            boxShadow: "0 2px 12px rgba(79,70,229,0.3)",
           }}
         >
-          <h1 style={{ margin: 0, fontSize: "20px", color: "#4F46E5" }}>
-            🎯 Expert Booking
-          </h1>
+          <a
+            href="/"
+            style={{
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "24px" }}>🎯</span>
+            <span
+              style={{
+                color: "#fff",
+                fontSize: "20px",
+                fontWeight: "700",
+                letterSpacing: "-0.3px",
+              }}
+            >
+              ExpertBook
+            </span>
+          </a>
           <a
             href="/my-bookings"
             style={{
-              color: "#4F46E5",
+              color: "#fff",
               textDecoration: "none",
               fontWeight: "500",
               fontSize: "14px",
+              background: "rgba(255,255,255,0.15)",
+              padding: "8px 18px",
+              borderRadius: "8px",
+              border: "1px solid rgba(255,255,255,0.2)",
+              transition: "all 0.2s",
             }}
           >
             My Bookings
           </a>
         </nav>
 
+        {/* Page Content */}
         <div
-          style={{ maxWidth: "1100px", margin: "0 auto", padding: "32px 16px" }}
+          style={{
+            width: "100%",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            padding: "32px 24px",
+          }}
         >
           <Routes>
             <Route path="/" element={<ExpertList />} />
