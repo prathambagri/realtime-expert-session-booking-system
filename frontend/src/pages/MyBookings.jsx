@@ -37,6 +37,17 @@ const MyBookings = () => {
     }
   };
 
+  const updateStatus = async (bookingId, status) => {
+    try {
+      await API.patch(`/bookings/${bookingId}/status`, { status });
+      setBookings((prev) =>
+        prev.map((b) => (b._id === bookingId ? { ...b, status } : b)),
+      );
+    } catch (err) {
+      alert("Failed to update status. Please try again.");
+    }
+  };
+
   const cancelBooking = async (bookingId) => {
     if (!window.confirm("Are you sure you want to cancel this booking?"))
       return;
@@ -122,14 +133,7 @@ const MyBookings = () => {
           </button>
         </form>
         {error && (
-          <p
-            style={{
-              color: "#FCA5A5",
-              fontSize: "13px",
-              marginTop: "8px",
-              margin: "8px 0 0",
-            }}
-          >
+          <p style={{ color: "#FCA5A5", fontSize: "13px", margin: "8px 0 0" }}>
             {error}
           </p>
         )}
@@ -239,6 +243,7 @@ const MyBookings = () => {
                             </div>
                             <StatusBadge status={booking.status} />
                           </div>
+
                           <div
                             style={{
                               display: "flex",
@@ -257,6 +262,7 @@ const MyBookings = () => {
                               ⏰ {booking.timeSlot}
                             </span>
                           </div>
+
                           {booking.notes && (
                             <p
                               style={{
@@ -272,21 +278,68 @@ const MyBookings = () => {
                               📝 {booking.notes}
                             </p>
                           )}
-                          <button
-                            onClick={() => cancelBooking(booking._id)}
+
+                          <div
                             style={{
-                              padding: "7px 16px",
-                              background: "#FEE2E2",
-                              color: "#991B1B",
-                              border: "1px solid #FCA5A5",
-                              borderRadius: "8px",
-                              cursor: "pointer",
-                              fontSize: "13px",
-                              fontWeight: "500",
+                              display: "flex",
+                              gap: "8px",
+                              flexWrap: "wrap",
                             }}
                           >
-                            Cancel Booking
-                          </button>
+                            {booking.status === "pending" && (
+                              <button
+                                onClick={() =>
+                                  updateStatus(booking._id, "confirmed")
+                                }
+                                style={{
+                                  padding: "7px 16px",
+                                  background: "#D1FAE5",
+                                  color: "#065F46",
+                                  border: "1px solid #6EE7B7",
+                                  borderRadius: "8px",
+                                  cursor: "pointer",
+                                  fontSize: "13px",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                ✓ Confirm
+                              </button>
+                            )}
+                            {booking.status !== "completed" && (
+                              <button
+                                onClick={() =>
+                                  updateStatus(booking._id, "completed")
+                                }
+                                style={{
+                                  padding: "7px 16px",
+                                  background: "#DBEAFE",
+                                  color: "#1E40AF",
+                                  border: "1px solid #93C5FD",
+                                  borderRadius: "8px",
+                                  cursor: "pointer",
+                                  fontSize: "13px",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                ✓ Complete
+                              </button>
+                            )}
+                            <button
+                              onClick={() => cancelBooking(booking._id)}
+                              style={{
+                                padding: "7px 16px",
+                                background: "#FEE2E2",
+                                color: "#991B1B",
+                                border: "1px solid #FCA5A5",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                fontSize: "13px",
+                                fontWeight: "500",
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </div>
                       );
                     })}
