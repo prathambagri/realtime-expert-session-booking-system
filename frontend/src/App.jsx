@@ -38,7 +38,7 @@ const App = () => {
                 letterSpacing: "-0.3px",
               }}
             >
-              ExpertBook
+              ExpertConnect
             </span>
           </a>
           <a
