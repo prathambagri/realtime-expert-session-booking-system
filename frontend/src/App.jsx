@@ -3,6 +3,7 @@ import ExpertList from "./pages/ExpertList";
 import ExpertDetail from "./pages/ExpertDetail";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -12,12 +13,15 @@ const App = () => {
         <nav
           style={{
             background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
-            padding: "0 32px",
+            padding: "0 16px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             height: "64px",
             boxShadow: "0 2px 12px rgba(79,70,229,0.3)",
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
           }}
         >
           <a
@@ -26,19 +30,19 @@ const App = () => {
               textDecoration: "none",
               display: "flex",
               alignItems: "center",
-              gap: "10px",
+              gap: "8px",
             }}
           >
-            <span style={{ fontSize: "24px" }}>🎯</span>
+            <span style={{ fontSize: "22px" }}>🎯</span>
             <span
               style={{
                 color: "#fff",
-                fontSize: "20px",
+                fontSize: "18px",
                 fontWeight: "700",
                 letterSpacing: "-0.3px",
               }}
             >
-              ExpertConnect
+              ExpertBook
             </span>
           </a>
           <a
@@ -47,12 +51,12 @@ const App = () => {
               color: "#fff",
               textDecoration: "none",
               fontWeight: "500",
-              fontSize: "14px",
+              fontSize: "13px",
               background: "rgba(255,255,255,0.15)",
-              padding: "8px 18px",
+              padding: "7px 14px",
               borderRadius: "8px",
               border: "1px solid rgba(255,255,255,0.2)",
-              transition: "all 0.2s",
+              whiteSpace: "nowrap",
             }}
           >
             My Bookings
@@ -65,7 +69,7 @@ const App = () => {
             width: "100%",
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "32px 24px",
+            padding: "24px 16px",
           }}
         >
           <Routes>
@@ -73,6 +77,7 @@ const App = () => {
             <Route path="/experts/:id" element={<ExpertDetail />} />
             <Route path="/booking/:id" element={<Booking />} />
             <Route path="/my-bookings" element={<MyBookings />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>

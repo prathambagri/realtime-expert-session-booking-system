@@ -2,6 +2,10 @@
 const Booking = require("../models/Booking");
 const Expert = require("../models/Expert");
 const { emitSlotBooked, emitSlotFreed } = require("../socket");
+const {
+  sendBookingConfirmation,
+  sendBookingCancellation,
+} = require("../utils/email");
 
 exports.createBooking = async (req, res) => {
   try {
@@ -41,6 +45,14 @@ exports.createBooking = async (req, res) => {
 
     emitSlotBooked(String(expertId), date, timeSlot);
 
+    await sendBookingConfirmation({
+      name,
+      email,
+      expertName: updated.name,
+      date,
+      timeSlot,
+    });
+
     res.status(201).json(booking);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -63,6 +75,7 @@ exports.updateBookingStatus = async (req, res) => {
     if (!booking) return res.status(404).json({ error: "Booking not found" });
 
     // if cancelled, free the slot and notify all users
+    // if cancelled, free the slot and notify all users
     if (status === "cancelled") {
       await Expert.findOneAndUpdate(
         {
@@ -72,7 +85,18 @@ exports.updateBookingStatus = async (req, res) => {
         },
         { $set: { "availableSlots.$.isBooked": false } },
       );
+
       emitSlotFreed(String(booking.expertId), booking.date, booking.timeSlot);
+
+      const expert = await Expert.findById(booking.expertId);
+
+      await sendBookingCancellation({
+        name: booking.name,
+        email: booking.email,
+        expertName: expert.name,
+        date: booking.date,
+        timeSlot: booking.timeSlot,
+      });
     }
 
     res.json(booking);
@@ -94,3 +118,4 @@ exports.getBookingsByEmail = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+

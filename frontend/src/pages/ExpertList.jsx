@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import API from "../api/axios";
 import ExpertCard from "../components/ExpertCard";
+import SkeletonCard from "../components/SkeletonCard";
 
 const CATEGORIES = ["All", "Design", "Engineering", "Marketing", "Finance"];
 
@@ -59,16 +60,16 @@ const ExpertList = () => {
       <div
         style={{
           background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
-          borderRadius: "20px",
-          padding: "48px 40px",
-          marginBottom: "32px",
+          borderRadius: "16px",
+          padding: "32px 20px",
+          marginBottom: "24px",
           color: "#fff",
           textAlign: "center",
         }}
       >
         <h1
           style={{
-            fontSize: "36px",
+            fontSize: "28px",
             fontWeight: "800",
             marginBottom: "12px",
             letterSpacing: "-0.5px",
@@ -89,6 +90,7 @@ const ExpertList = () => {
             gap: "8px",
             maxWidth: "600px",
             margin: "0 auto",
+            flexWrap: "wrap",
           }}
         >
           <input
@@ -127,7 +129,7 @@ const ExpertList = () => {
       <div
         style={{
           display: "flex",
-          gap: "10px",
+          gap: "8px",
           marginBottom: "24px",
           flexWrap: "wrap",
           alignItems: "center",
@@ -182,9 +184,17 @@ const ExpertList = () => {
 
       {/* Loading */}
       {loading && (
-        <div style={{ textAlign: "center", padding: "80px", color: "#6B7280" }}>
-          <div style={{ fontSize: "32px", marginBottom: "12px" }}>⏳</div>
-          Loading experts...
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gap: "24px",
+            marginBottom: "32px",
+          }}
+        >
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       )}
 

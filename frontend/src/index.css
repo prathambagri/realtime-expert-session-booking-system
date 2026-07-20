@@ -22,3 +22,10 @@ body {
   background: #D1D5DB;
   border-radius: 3px;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .nav-title {
+    font-size: 16px !important;
+  }
+}

@@ -100,7 +100,10 @@ const MyBookings = () => {
         <p style={{ margin: "0 0 24px", opacity: 0.85, fontSize: "14px" }}>
           Enter your email to view all your sessions
         </p>
-        <form onSubmit={fetchBookings} style={{ display: "flex", gap: "8px" }}>
+        <form
+          onSubmit={fetchBookings}
+          style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+        >
           <input
             type="email"
             value={email}
@@ -108,6 +111,7 @@ const MyBookings = () => {
             placeholder="your@email.com"
             style={{
               flex: 1,
+              minWidth: 0,
               padding: "12px 18px",
               borderRadius: "12px",
               border: "none",
