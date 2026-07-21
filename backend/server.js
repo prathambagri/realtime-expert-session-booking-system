@@ -1,13 +1,13 @@
+const dotenv = require("dotenv");
+dotenv.config();
 
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const http = require("http");
 const { Server } = require("socket.io");
 const { initSocket } = require("./src/socket");
-
-dotenv.config();
+const adminRoutes = require("./src/routes/adminRoutes");
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -23,6 +23,7 @@ app.use(express.json());
 
 app.use("/experts", require("./src/routes/expertRoutes"));
 app.use("/bookings", require("./src/routes/bookingRoutes"));
+app.use("/api/admin", adminRoutes);
 
 app.use(require("./src/middleware/errorHandler"));
 
