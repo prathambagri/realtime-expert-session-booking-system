@@ -1,25 +1,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser, SignInButton } from "@clerk/clerk-react";
 import API from "../api/axios";
 import StatusBadge from "../components/StatusBadge";
 
 const CATEGORY_COLORS = {
-  Design: { bg: "#EDE9FE", color: "#5B21B6" },
-  Engineering: { bg: "#DBEAFE", color: "#1E40AF" },
-  Marketing: { bg: "#D1FAE5", color: "#065F46" },
-  Finance: { bg: "#FEF3C7", color: "#92400E" },
+  Design: "bg-purple-100 text-purple-800",
+  Engineering: "bg-blue-100 text-blue-800",
+  Marketing: "bg-green-100 text-green-800",
+  Finance: "bg-yellow-100 text-yellow-800",
 };
 
 const MyBookings = () => {
   const navigate = useNavigate();
+  const { isSignedIn } = useUser();
   const [email, setEmail] = useState("");
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
 
   const fetchBookings = async (e) => {
     e.preventDefault();
+    if (!isSignedIn) {
+      setShowSignIn(true);
+      return;
+    }
     if (!email.trim()) return setError("Please enter your email");
     if (!/\S+@\S+\.\S+/.test(email))
       return setError("Please enter a valid email");
@@ -67,79 +74,48 @@ const MyBookings = () => {
   const cancelledBookings = bookings.filter((b) => b.status === "cancelled");
 
   return (
-    <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+    <div className="max-w-2xl mx-auto">
       <button
         onClick={() => navigate("/")}
-        style={{
-          background: "none",
-          border: "none",
-          color: "#4F46E5",
-          cursor: "pointer",
-          fontSize: "14px",
-          marginBottom: "20px",
-          padding: 0,
-          fontWeight: "500",
-        }}
+        className="text-indigo-600 font-medium text-sm mb-5 flex items-center gap-1 hover:text-indigo-800"
       >
         ← Back to Experts
       </button>
 
       {/* Header */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #4F46E5, #7C3AED)",
-          borderRadius: "20px",
-          padding: "32px",
-          color: "#fff",
-          marginBottom: "24px",
-        }}
-      >
-        <h2 style={{ margin: "0 0 8px", fontSize: "26px", fontWeight: "800" }}>
-          My Bookings
-        </h2>
-        <p style={{ margin: "0 0 24px", opacity: 0.85, fontSize: "14px" }}>
+      <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white mb-6">
+        <h2 className="text-2xl font-extrabold mb-2">My Bookings</h2>
+        <p className="text-white/80 text-sm mb-6">
           Enter your email to view all your sessions
         </p>
-        <form
-          onSubmit={fetchBookings}
-          style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
-        >
+        <form onSubmit={fetchBookings} className="flex gap-2 flex-wrap">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            style={{
-              flex: 1,
-              minWidth: 0,
-              padding: "12px 18px",
-              borderRadius: "12px",
-              border: "none",
-              fontSize: "15px",
-              outline: "none",
-            }}
+            className="flex-1 min-w-0 px-4 py-3 rounded-xl text-gray-800 text-sm outline-none"
           />
           <button
             type="submit"
             disabled={loading}
-            style={{
-              padding: "12px 24px",
-              background: "#fff",
-              color: "#4F46E5",
-              border: "none",
-              borderRadius: "12px",
-              cursor: loading ? "not-allowed" : "pointer",
-              fontWeight: "700",
-              fontSize: "14px",
-            }}
+            className="px-6 py-3 bg-white text-indigo-600 font-bold rounded-xl cursor-pointer text-sm disabled:opacity-60"
           >
             {loading ? "..." : "Search"}
           </button>
         </form>
-        {error && (
-          <p style={{ color: "#FCA5A5", fontSize: "13px", margin: "8px 0 0" }}>
-            {error}
-          </p>
+        {error && <p className="text-red-300 text-sm mt-2">{error}</p>}
+        {showSignIn && (
+          <div className="mt-3 p-3 bg-white/20 rounded-xl text-center">
+            <p className="text-white text-sm mb-2">
+              Please sign in to view your bookings
+            </p>
+            <SignInButton mode="modal">
+              <button className="px-4 py-2 bg-white text-indigo-600 rounded-lg font-bold text-sm cursor-pointer border-none">
+                Sign In
+              </button>
+            </SignInButton>
+          </div>
         )}
       </div>
 
@@ -147,31 +123,14 @@ const MyBookings = () => {
       {searched && (
         <>
           {bookings.length === 0 ? (
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: "20px",
-                padding: "60px",
-                textAlign: "center",
-                border: "1px solid #F3F4F6",
-              }}
-            >
-              <div style={{ fontSize: "48px", marginBottom: "12px" }}>📭</div>
-              <p style={{ color: "#6B7280", fontSize: "16px" }}>
+            <div className="bg-white rounded-2xl p-16 text-center border border-gray-100">
+              <div className="text-5xl mb-3">📭</div>
+              <p className="text-gray-500 text-base">
                 No bookings found for this email.
               </p>
               <button
                 onClick={() => navigate("/")}
-                style={{
-                  marginTop: "16px",
-                  padding: "10px 24px",
-                  background: "linear-gradient(135deg, #4F46E5, #7C3AED)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  fontWeight: "600",
-                }}
+                className="mt-4 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold text-sm cursor-pointer"
               >
                 Book a Session
               </button>
@@ -180,173 +139,75 @@ const MyBookings = () => {
             <>
               {/* Active Bookings */}
               {activeBookings.length > 0 && (
-                <div style={{ marginBottom: "24px" }}>
-                  <h3
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      color: "#374151",
-                      marginBottom: "12px",
-                    }}
-                  >
+                <div className="mb-6">
+                  <h3 className="text-sm font-bold text-gray-700 mb-3">
                     Active Bookings ({activeBookings.length})
                   </h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "12px",
-                    }}
-                  >
-                    {activeBookings.map((booking) => {
-                      const catColor = CATEGORY_COLORS[
-                        booking.expertId?.category
-                      ] || { bg: "#F3F4F6", color: "#374151" };
-                      return (
-                        <div
-                          key={booking._id}
-                          style={{
-                            background: "#fff",
-                            borderRadius: "16px",
-                            padding: "20px 24px",
-                            border: "1px solid #F3F4F6",
-                            boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "flex-start",
-                              marginBottom: "12px",
-                            }}
-                          >
-                            <div>
-                              <h4
-                                style={{
-                                  margin: "0 0 6px",
-                                  fontSize: "16px",
-                                  fontWeight: "700",
-                                  color: "#111827",
-                                }}
-                              >
-                                {booking.expertId?.name || "Expert"}
-                              </h4>
-                              <span
-                                style={{
-                                  background: catColor.bg,
-                                  color: catColor.color,
-                                  padding: "2px 10px",
-                                  borderRadius: "999px",
-                                  fontSize: "12px",
-                                  fontWeight: "600",
-                                }}
-                              >
-                                {booking.expertId?.category || "N/A"}
-                              </span>
-                            </div>
-                            <StatusBadge status={booking.status} />
-                          </div>
-
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "16px",
-                              marginBottom: "12px",
-                            }}
-                          >
+                  <div className="flex flex-col gap-3">
+                    {activeBookings.map((booking) => (
+                      <div
+                        key={booking._id}
+                        className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <h4 className="text-base font-bold text-gray-900 mb-1">
+                              {booking.expertId?.name || "Expert"}
+                            </h4>
                             <span
-                              style={{ fontSize: "14px", color: "#6B7280" }}
+                              className={`text-xs font-semibold px-3 py-0.5 rounded-full ${CATEGORY_COLORS[booking.expertId?.category] || "bg-gray-100 text-gray-700"}`}
                             >
-                              📅 {booking.date}
-                            </span>
-                            <span
-                              style={{ fontSize: "14px", color: "#6B7280" }}
-                            >
-                              ⏰ {booking.timeSlot}
+                              {booking.expertId?.category || "N/A"}
                             </span>
                           </div>
-
-                          {booking.notes && (
-                            <p
-                              style={{
-                                margin: "0 0 12px",
-                                fontSize: "14px",
-                                color: "#374151",
-                                background: "#F9FAFB",
-                                padding: "10px 14px",
-                                borderRadius: "8px",
-                                borderLeft: "3px solid #4F46E5",
-                              }}
-                            >
-                              📝 {booking.notes}
-                            </p>
-                          )}
-
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "8px",
-                              flexWrap: "wrap",
-                            }}
-                          >
-                            {booking.status === "pending" && (
-                              <button
-                                onClick={() =>
-                                  updateStatus(booking._id, "confirmed")
-                                }
-                                style={{
-                                  padding: "7px 16px",
-                                  background: "#D1FAE5",
-                                  color: "#065F46",
-                                  border: "1px solid #6EE7B7",
-                                  borderRadius: "8px",
-                                  cursor: "pointer",
-                                  fontSize: "13px",
-                                  fontWeight: "500",
-                                }}
-                              >
-                                ✓ Confirm
-                              </button>
-                            )}
-                            {booking.status !== "completed" && (
-                              <button
-                                onClick={() =>
-                                  updateStatus(booking._id, "completed")
-                                }
-                                style={{
-                                  padding: "7px 16px",
-                                  background: "#DBEAFE",
-                                  color: "#1E40AF",
-                                  border: "1px solid #93C5FD",
-                                  borderRadius: "8px",
-                                  cursor: "pointer",
-                                  fontSize: "13px",
-                                  fontWeight: "500",
-                                }}
-                              >
-                                ✓ Complete
-                              </button>
-                            )}
-                            <button
-                              onClick={() => cancelBooking(booking._id)}
-                              style={{
-                                padding: "7px 16px",
-                                background: "#FEE2E2",
-                                color: "#991B1B",
-                                border: "1px solid #FCA5A5",
-                                borderRadius: "8px",
-                                cursor: "pointer",
-                                fontSize: "13px",
-                                fontWeight: "500",
-                              }}
-                            >
-                              Cancel
-                            </button>
-                          </div>
+                          <StatusBadge status={booking.status} />
                         </div>
-                      );
-                    })}
+
+                        <div className="flex gap-4 mb-3">
+                          <span className="text-sm text-gray-500">
+                            📅 {booking.date}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            ⏰ {booking.timeSlot}
+                          </span>
+                        </div>
+
+                        {booking.notes && (
+                          <p className="text-sm text-gray-700 bg-gray-50 px-4 py-2.5 rounded-lg border-l-4 border-indigo-500 mb-3">
+                            📝 {booking.notes}
+                          </p>
+                        )}
+
+                        <div className="flex gap-2 flex-wrap">
+                          {booking.status === "pending" && (
+                            <button
+                              onClick={() =>
+                                updateStatus(booking._id, "confirmed")
+                              }
+                              className="px-4 py-1.5 bg-green-100 text-green-800 border border-green-300 rounded-lg text-xs font-medium cursor-pointer hover:bg-green-200"
+                            >
+                              ✓ Confirm
+                            </button>
+                          )}
+                          {booking.status !== "completed" && (
+                            <button
+                              onClick={() =>
+                                updateStatus(booking._id, "completed")
+                              }
+                              className="px-4 py-1.5 bg-blue-100 text-blue-800 border border-blue-300 rounded-lg text-xs font-medium cursor-pointer hover:bg-blue-200"
+                            >
+                              ✓ Complete
+                            </button>
+                          )}
+                          <button
+                            onClick={() => cancelBooking(booking._id)}
+                            className="px-4 py-1.5 bg-red-100 text-red-800 border border-red-300 rounded-lg text-xs font-medium cursor-pointer hover:bg-red-200"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -354,61 +215,25 @@ const MyBookings = () => {
               {/* Cancelled Bookings */}
               {cancelledBookings.length > 0 && (
                 <div>
-                  <h3
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "700",
-                      color: "#9CA3AF",
-                      marginBottom: "12px",
-                    }}
-                  >
+                  <h3 className="text-sm font-bold text-gray-400 mb-3">
                     Cancelled ({cancelledBookings.length})
                   </h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "12px",
-                    }}
-                  >
+                  <div className="flex flex-col gap-3">
                     {cancelledBookings.map((booking) => (
                       <div
                         key={booking._id}
-                        style={{
-                          background: "#F9FAFB",
-                          borderRadius: "16px",
-                          padding: "20px 24px",
-                          border: "1px solid #F3F4F6",
-                          opacity: 0.7,
-                        }}
+                        className="bg-gray-50 rounded-2xl p-5 border border-gray-100 opacity-70"
                       >
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
+                        <div className="flex justify-between items-center">
                           <div>
-                            <h4
-                              style={{
-                                margin: "0 0 4px",
-                                fontSize: "15px",
-                                fontWeight: "600",
-                                color: "#6B7280",
-                              }}
-                            >
+                            <h4 className="text-sm font-semibold text-gray-500 mb-1">
                               {booking.expertId?.name || "Expert"}
                             </h4>
-                            <div style={{ display: "flex", gap: "12px" }}>
-                              <span
-                                style={{ fontSize: "13px", color: "#9CA3AF" }}
-                              >
+                            <div className="flex gap-3">
+                              <span className="text-xs text-gray-400">
                                 📅 {booking.date}
                               </span>
-                              <span
-                                style={{ fontSize: "13px", color: "#9CA3AF" }}
-                              >
+                              <span className="text-xs text-gray-400">
                                 ⏰ {booking.timeSlot}
                               </span>
                             </div>

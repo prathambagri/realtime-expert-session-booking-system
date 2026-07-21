@@ -1,69 +1,47 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+import {
+  SignedIn,
+  SignedOut,
+  UserButton,
+  SignInButton,
+} from "@clerk/clerk-react";
 
 export default function MainLayout() {
   return (
-    <div style={{ minHeight: "100vh", background: "#F3F4F6" }}>
+    <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
-      <nav
-        style={{
-          background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
-          padding: "0 16px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          height: "64px",
-          boxShadow: "0 2px 12px rgba(79,70,229,0.3)",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-        }}
-      >
-        <a
-          href="/"
-          style={{
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          <span style={{ fontSize: "22px" }}>🎯</span>
-
-          <span
-            style={{
-              color: "#fff",
-              fontSize: "18px",
-              fontWeight: "700",
-            }}
-          >
+      <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 flex justify-between items-center h-16 shadow-lg sticky top-0 z-50">
+        <Link to="/" className="flex items-center gap-2 no-underline">
+          <span className="text-2xl">🎯</span>
+          <span className="text-white text-lg font-bold tracking-tight">
             ExpertBook
           </span>
-        </a>
+        </Link>
 
-        <a
-          href="/my-bookings"
-          style={{
-            color: "#fff",
-            textDecoration: "none",
-            fontWeight: "500",
-            fontSize: "13px",
-            background: "rgba(255,255,255,0.15)",
-            padding: "7px 14px",
-            borderRadius: "8px",
-          }}
-        >
-          My Bookings
-        </a>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/my-bookings"
+            className="text-white text-sm font-medium bg-white/15 px-4 py-2 rounded-lg border border-white/20 no-underline hover:bg-white/25 transition"
+          >
+            My Bookings
+          </Link>
+
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="text-indigo-600 bg-white text-sm font-bold px-4 py-2 rounded-lg cursor-pointer border-none hover:bg-gray-100 transition">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+        </div>
       </nav>
 
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "24px 16px",
-        }}
-      >
+      {/* Page Content */}
+      <div className="w-full max-w-6xl mx-auto px-4 py-6">
         <Outlet />
       </div>
     </div>
