@@ -57,107 +57,65 @@ const ExpertList = () => {
   return (
     <div>
       {/* Hero */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
-          borderRadius: "16px",
-          padding: "32px 20px",
-          marginBottom: "24px",
-          color: "#fff",
-          textAlign: "center",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "28px",
-            fontWeight: "800",
-            marginBottom: "12px",
-            letterSpacing: "-0.5px",
-          }}
-        >
-          Find Your Perfect Expert
-        </h1>
-        <p style={{ fontSize: "16px", opacity: 0.85, marginBottom: "32px" }}>
-          Book 1-on-1 sessions with top professionals in Design, Engineering,
-          Marketing & Finance
-        </p>
+      <div className="relative mb-10 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 px-6 py-14 md:px-12 md:py-20 shadow-2xl">
+        {/* Background Blur */}
+        <div className="absolute -top-20 -right-16 h-64 w-64 rounded-full bg-indigo-400/20 blur-3xl"></div>
+        <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-violet-400/10 blur-3xl"></div>
 
-        {/* Search Bar */}
-        <form
-          onSubmit={handleSearch}
-          style={{
-            display: "flex",
-            gap: "8px",
-            maxWidth: "600px",
-            margin: "0 auto",
-            flexWrap: "wrap",
-          }}
-        >
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by expert name..."
-            style={{
-              flex: 1,
-              padding: "14px 20px",
-              borderRadius: "12px",
-              border: "none",
-              fontSize: "15px",
-              outline: "none",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            }}
-          />
-          <button
-            type="submit"
-            style={{
-              padding: "14px 28px",
-              background: "#fff",
-              color: "#4F46E5",
-              border: "none",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontSize: "15px",
-              fontWeight: "700",
-            }}
+        <div className="relative mx-auto max-w-3xl text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+            Find Your Perfect Expert
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
+            Book one-on-one sessions with experienced professionals in Design,
+            Engineering, Marketing and Finance.
+          </p>
+
+          {/* Search */}
+          <form
+            onSubmit={handleSearch}
+            className="mx-auto mt-10 flex max-w-2xl flex-col gap-3 sm:flex-row"
           >
-            Search
-          </button>
-        </form>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search experts..."
+              className="flex-1 rounded-2xl border border-white/10 bg-white px-5 py-4 text-slate-700 shadow-lg outline-none transition-all duration-300 placeholder:text-slate-400 focus:ring-4 focus:ring-indigo-300"
+            />
+
+            <button
+              type="submit"
+              className="rounded-2xl bg-white px-8 py-4 font-semibold text-indigo-600 shadow-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-700"
+            >
+              Search
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* Filter Bar */}
-      <div
-        style={{
-          display: "flex",
-          gap: "8px",
-          marginBottom: "24px",
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <span style={{ fontSize: "14px", color: "#6B7280", fontWeight: "500" }}>
-          Filter:
-        </span>
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => handleCategoryChange({ target: { value: cat } })}
-            style={{
-              padding: "8px 20px",
-              borderRadius: "999px",
-              border: "1.5px solid",
-              borderColor: category === cat ? "#4F46E5" : "#E5E7EB",
-              background: category === cat ? "#4F46E5" : "#fff",
-              color: category === cat ? "#fff" : "#374151",
-              cursor: "pointer",
-              fontSize: "14px",
-              fontWeight: "500",
-              transition: "all 0.2s",
-            }}
-          >
-            {cat}
-          </button>
-        ))}
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm font-semibold text-slate-500">
+            Categories
+          </span>
+
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => handleCategoryChange({ target: { value: cat } })}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+                category === cat
+                  ? "bg-indigo-600 text-white shadow-md"
+                  : "border border-slate-300 bg-white text-slate-700 hover:border-indigo-400 hover:bg-indigo-50"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
         {(search || category !== "All") && (
           <button
             onClick={() => {
@@ -166,32 +124,16 @@ const ExpertList = () => {
               setPage(1);
               fetchExperts("All", 1, "");
             }}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "999px",
-              border: "1.5px solid #FCA5A5",
-              background: "#FEE2E2",
-              color: "#991B1B",
-              cursor: "pointer",
-              fontSize: "14px",
-              fontWeight: "500",
-            }}
+            className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
           >
-            ✕ Clear
+            Clear Filters
           </button>
         )}
       </div>
 
       {/* Loading */}
       {loading && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-            gap: "24px",
-            marginBottom: "32px",
-          }}
-        >
+        <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <SkeletonCard key={i} />
           ))}
@@ -200,16 +142,11 @@ const ExpertList = () => {
 
       {/* Error */}
       {error && (
-        <div
-          style={{
-            background: "#FEE2E2",
-            color: "#991B1B",
-            padding: "16px",
-            borderRadius: "12px",
-            marginBottom: "16px",
-          }}
-        >
-          {error}
+        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-red-700 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">⚠️</span>
+            <span className="font-medium">{error}</span>
+          </div>
         </div>
       )}
 
@@ -217,21 +154,31 @@ const ExpertList = () => {
       {!loading && !error && (
         <>
           {experts.length === 0 ? (
-            <div
-              style={{ textAlign: "center", padding: "80px", color: "#6B7280" }}
-            >
-              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🔍</div>
-              No experts found.
+            <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 py-20 text-center">
+              <div className="mb-4 text-6xl">🔍</div>
+
+              <h2 className="text-2xl font-bold text-slate-800">
+                No Experts Found
+              </h2>
+
+              <p className="mt-2 text-slate-500">
+                Try another keyword or choose a different category.
+              </p>
+
+              <button
+                onClick={() => {
+                  setSearch("");
+                  setCategory("All");
+                  setPage(1);
+                  fetchExperts("All", 1, "");
+                }}
+                className="mt-6 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-indigo-700"
+              >
+                Reset Filters
+              </button>
             </div>
           ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                gap: "24px",
-                marginBottom: "32px",
-              }}
-            >
+            <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
               {experts.map((expert) => (
                 <ExpertCard key={expert._id} expert={expert} />
               ))}

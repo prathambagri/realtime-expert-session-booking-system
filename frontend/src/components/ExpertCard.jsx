@@ -21,78 +21,19 @@ const ExpertCard = ({ expert }) => {
   return (
     <div
       onClick={() => navigate(`/experts/${expert._id}`)}
-      style={{
-        background: "#fff",
-        borderRadius: "16px",
-        padding: "24px",
-        cursor: "pointer",
-        border: "1px solid #F3F4F6",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-        transition: "all 0.2s",
-        position: "relative",
-        overflow: "hidden",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = "0 8px 24px rgba(79,70,229,0.12)";
-        e.currentTarget.style.transform = "translateY(-2px)";
-        e.currentTarget.style.borderColor = "#C7D2FE";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.06)";
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.borderColor = "#F3F4F6";
-      }}
+      className="group relative cursor-pointer overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl"
     >
       {/* Top accent line */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "4px",
-          background: "linear-gradient(90deg, #4F46E5, #7C3AED)",
-        }}
-      />
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-600 to-violet-500" />
 
       {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "14px",
-          marginBottom: "16px",
-        }}
-      >
+      <div className="mb-5 flex items-start gap-4">
         {/* Avatar */}
-        <div
-          style={{
-            width: "52px",
-            height: "52px",
-            borderRadius: "14px",
-            background: "linear-gradient(135deg, #4F46E5, #7C3AED)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            fontSize: "18px",
-            fontWeight: "700",
-            flexShrink: 0,
-          }}
-        >
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-500 text-lg font-bold text-white shadow-md">
           {initials}
         </div>
         <div style={{ flex: 1 }}>
-          <h3
-            style={{
-              margin: 0,
-              fontSize: "17px",
-              fontWeight: "700",
-              color: "#111827",
-            }}
-          >
-            {expert.name}
-          </h3>
+          <h3 className="text-lg font-bold text-slate-900">{expert.name}</h3>
           <div
             style={{
               display: "flex",
@@ -102,67 +43,32 @@ const ExpertCard = ({ expert }) => {
             }}
           >
             <span
+              className="rounded-full px-3 py-1 text-xs font-semibold"
               style={{
                 background: catColor.bg,
                 color: catColor.color,
-                padding: "2px 10px",
-                borderRadius: "999px",
-                fontSize: "12px",
-                fontWeight: "600",
               }}
             >
               {expert.category}
             </span>
-            <span style={{ fontSize: "12px", color: "#9CA3AF" }}>
-              {expert.experience} yrs exp
+            <span className="text-xs text-slate-500">
+              {expert.experience} yrs experience
             </span>
           </div>
         </div>
-        <div
-          style={{
-            background: "#FEF3C7",
-            color: "#92400E",
-            padding: "6px 10px",
-            borderRadius: "10px",
-            fontSize: "13px",
-            fontWeight: "700",
-            display: "flex",
-            alignItems: "center",
-            gap: "4px",
-          }}
-        >
+        <div className="flex items-center gap-1 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-700">
           ⭐ {expert.rating}
         </div>
       </div>
 
       {/* Bio */}
-      <p
-        style={{
-          color: "#6B7280",
-          fontSize: "14px",
-          lineHeight: "1.6",
-          margin: "0 0 16px",
-          minHeight: "44px",
-        }}
-      >
+      <p className="mb-6 line-clamp-3 text-sm leading-6 text-slate-600">
         {expert.bio}
       </p>
 
       {/* Button */}
-      <button
-        style={{
-          width: "100%",
-          padding: "10px",
-          background: "linear-gradient(135deg, #4F46E5, #7C3AED)",
-          color: "#fff",
-          border: "none",
-          borderRadius: "10px",
-          cursor: "pointer",
-          fontSize: "14px",
-          fontWeight: "600",
-        }}
-      >
-        View Profile →
+      <button className="w-full rounded-xl bg-gradient-to-r bg-indigo-600 hover:bg-indigo-700 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg">
+        View Profile
       </button>
     </div>
   );
