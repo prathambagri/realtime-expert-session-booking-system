@@ -101,7 +101,6 @@ exports.updateBookingStatus = async (req, res) => {
 
     res.json(booking);
   } catch (err) {
-    console.error("Create booking error:", err);
     res.status(500).json({ error: err.message });
   }
 };
