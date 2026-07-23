@@ -19,7 +19,10 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/admin/Dashboard";
 import Experts from "./pages/admin/Experts";
 import Bookings from "./pages/admin/Bookings";
+import Users from "./pages/admin/Users";
 import AdminLogin from "./pages/admin/AdminLogin";
+import SyncUser from "./components/SyncUser";
+import AdminManagement from "./pages/admin/AdminManagement";
 
 const AdminRoute = ({ children }) => {
   const { user } = useUser();
@@ -55,6 +58,8 @@ const AdminRoute = ({ children }) => {
 export default function App() {
   return (
     <BrowserRouter>
+      <SyncUser />
+
       <Routes>
         {/* Public Website */}
         <Route element={<MainLayout />}>
@@ -77,7 +82,7 @@ export default function App() {
                       You need to sign in to book a session with an expert.
                     </p>
                     <SignInButton mode="modal">
-                      <button className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold cursor-pointer border-none">
+                      <button className="px-6 py-3 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold cursor-pointer border-none">
                         Sign In to Continue
                       </button>
                     </SignInButton>
@@ -108,6 +113,8 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path="experts" element={<Experts />} />
           <Route path="bookings" element={<Bookings />} />
+          <Route path="users" element={<Users />} />
+          <Route path="admins" element={<AdminManagement />} />
         </Route>
 
         {/* 404 */}

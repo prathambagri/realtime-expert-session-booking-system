@@ -83,7 +83,7 @@ const MyBookings = () => {
       </button>
 
       {/* Header */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white mb-6">
+      <div className="bg-linear-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white mb-6">
         <h2 className="text-2xl font-extrabold mb-2">My Bookings</h2>
         <p className="text-white/80 text-sm mb-6">
           Enter your email to view all your sessions
@@ -94,7 +94,7 @@ const MyBookings = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="flex-1 min-w-0 px-4 py-3 rounded-xl text-gray-800 text-sm outline-none"
+            className="flex-1 min-w-0 px-4 py-3 rounded-xl bg-white/15 border border-white/25 text-white placeholder:text-white/70 outline-none focus:ring-2 focus:ring-white/40 backdrop-blur-sm transition"
           />
           <button
             type="submit"
@@ -130,7 +130,7 @@ const MyBookings = () => {
               </p>
               <button
                 onClick={() => navigate("/")}
-                className="mt-4 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold text-sm cursor-pointer"
+                className="mt-4 px-6 py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold text-sm cursor-pointer"
               >
                 Book a Session
               </button>
@@ -179,26 +179,6 @@ const MyBookings = () => {
                         )}
 
                         <div className="flex gap-2 flex-wrap">
-                          {booking.status === "pending" && (
-                            <button
-                              onClick={() =>
-                                updateStatus(booking._id, "confirmed")
-                              }
-                              className="px-4 py-1.5 bg-green-100 text-green-800 border border-green-300 rounded-lg text-xs font-medium cursor-pointer hover:bg-green-200"
-                            >
-                              ✓ Confirm
-                            </button>
-                          )}
-                          {booking.status !== "completed" && (
-                            <button
-                              onClick={() =>
-                                updateStatus(booking._id, "completed")
-                              }
-                              className="px-4 py-1.5 bg-blue-100 text-blue-800 border border-blue-300 rounded-lg text-xs font-medium cursor-pointer hover:bg-blue-200"
-                            >
-                              ✓ Complete
-                            </button>
-                          )}
                           <button
                             onClick={() => cancelBooking(booking._id)}
                             className="px-4 py-1.5 bg-red-100 text-red-800 border border-red-300 rounded-lg text-xs font-medium cursor-pointer hover:bg-red-200"

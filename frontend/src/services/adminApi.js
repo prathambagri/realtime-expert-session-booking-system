@@ -17,10 +17,28 @@ export const getAllBookings = async () => {
 export const updateBookingStatus = (id, status) =>
   API.patch(`/api/admin/bookings/${id}/status`, { status });
 
-export const getAllExperts = async () => {
-  const response = await API.get("/api/admin/experts");
+export const getAllExperts = async ({
+  page = 1,
+  limit = 6,
+  search = "",
+  category = "",
+  experience = "",
+  status = "",
+} = {}) => {
+  const response = await API.get("/api/admin/experts", {
+    params: {
+      page,
+      limit,
+      search,
+      category,
+      experience,
+      status,
+    },
+  });
+
   return response.data;
 };
+
 
 export const createExpert = (data) => API.post("/api/admin/experts", data);
 

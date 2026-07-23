@@ -1,5 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { MdDashboard, MdPeople, MdEventNote } from "react-icons/md";
+import {
+  MdDashboard,
+  MdPeople,
+  MdEventNote,
+  MdManageAccounts,
+  MdAdminPanelSettings,
+} from "react-icons/md";
+
 
 export default function Sidebar() {
   const linkClasses = ({ isActive }) =>
@@ -28,6 +35,16 @@ export default function Sidebar() {
         <NavLink to="/admin/bookings" className={linkClasses}>
           <MdEventNote size={22} />
           Bookings
+        </NavLink>
+
+        <NavLink to="/admin/users" className={linkClasses}>
+          <MdManageAccounts size={22} />
+          User Management
+        </NavLink>
+
+        <NavLink to="/admin/admins" className={linkClasses}>
+          <MdAdminPanelSettings size={22} />
+          Admin Management
         </NavLink>
       </nav>
     </aside>

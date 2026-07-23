@@ -11,23 +11,42 @@ export default function Experts() {
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-    const [selectedExpert, setSelectedExpert] = useState(null);
-    
+  const [selectedExpert, setSelectedExpert] = useState(null);
+  
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [experience, setExperience] = useState("");
+  const [status, setStatus] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const categories = [...new Set(experts.map((expert) => expert.category))];
+  
 
   useEffect(() => {
     fetchExperts();
-  }, []);
+  }, [page, search, category, experience, status]);
 
-  const fetchExperts = async () => {
-    try {
-      const data = await getAllExperts();
-      setExperts(data);
-    } catch (error) {
-      console.error("Failed to fetch experts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const fetchExperts = async () => {
+   try {
+     setLoading(true);
+
+     const data = await getAllExperts({
+       page,
+       search,
+       category,
+       experience,
+       status,
+     });
+
+     setExperts(data.experts);
+     setTotalPages(data.totalPages);
+   } catch (error) {
+     console.error("Failed to fetch experts:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
 
   const handleSaveExpert = async (data) => {
     try {
@@ -93,6 +112,100 @@ export default function Experts() {
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg"
         >
           + Add Expert
+        </button>
+      </div>
+
+      <div className="flex flex-wrap gap-3 mb-6">
+        <input
+          type="text"
+          placeholder="Search expert..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded-lg px-4 py-2 w-64"
+        />
+
+        <select
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded-lg px-4 py-2"
+        >
+          <option value="">All Categories</option>
+
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+
+
+        <select
+          value={experience}
+          onChange={(e) => {
+            setExperience(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded-lg px-4 py-2"
+        >
+          <option value="">All Experience</option>
+          <option value="1">1+ Years</option>
+          <option value="3">3+ Years</option>
+          <option value="5">5+ Years</option>
+          <option value="10">10+ Years</option>
+        </select>
+
+        <select
+          value={status}
+          onChange={(e) => {
+            setStatus(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded-lg px-4 py-2"
+        >
+          <option value="">All Status</option>
+          <option value="Available">Available</option>
+          <option value="Fully Booked">Fully Booked</option>
+        </select>
+
+        <button
+          onClick={() => {
+            setSearch("");
+            setCategory("");
+            setExperience("");
+            setStatus("");
+            setPage(1);
+          }}
+          className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
+        >
+          Reset
+        </button>
+      </div>
+
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <span>
+          Page {page} of {totalPages}
+        </span>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage((p) => p + 1)}
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Next
         </button>
       </div>
 

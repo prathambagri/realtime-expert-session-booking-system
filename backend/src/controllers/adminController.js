@@ -46,11 +46,68 @@ exports.getAllBookings = async (req, res) => {
 
 exports.getAllExperts = async (req, res) => {
   try {
-    const experts = await Expert.find().sort({ createdAt: -1 });
+    const {
+      page = 1,
+      limit = 6,
+      search,
+      category,
+      experience,
+      status,
+    } = req.query;
 
-    res.json(experts);
+    const filter = {};
+
+    // Search
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
+
+    // Category
+    if (category && category !== "All") {
+      filter.category = category;
+    }
+
+    // Minimum experience
+    if (experience) {
+      filter.experience = {
+        $gte: Number(experience),
+      };
+    }
+
+    let experts = await Expert.find(filter).sort({
+      createdAt: -1,
+    });
+
+    // Status filter
+    if (status && status !== "All") {
+      experts = experts.filter((expert) => {
+        const hasAvailableSlot = expert.availableSlots.some(
+          (slot) => !slot.isBooked
+        );
+
+        return status === "Available"
+          ? hasAvailableSlot
+          : !hasAvailableSlot;
+      });
+    }
+
+    const total = experts.length;
+
+    const paginatedExperts = experts.slice(
+      (Number(page) - 1) * Number(limit),
+      Number(page) * Number(limit)
+    );
+
+    res.json({
+      experts: paginatedExperts,
+      total,
+      page: Number(page),
+      totalPages: Math.ceil(total / Number(limit)),
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 

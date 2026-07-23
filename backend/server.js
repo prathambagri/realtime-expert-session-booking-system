@@ -8,9 +8,11 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { initSocket } = require("./src/socket");
 const adminRoutes = require("./src/routes/adminRoutes");
+const userRoutes = require("./src/routes/userRoutes");
 
 const app = express();
 const httpServer = http.createServer(app);
+const adminManagementRoutes = require("./src/routes/adminManagementRoutes");
 
 const io = new Server(httpServer, {
   cors: { origin: process.env.CLIENT_URL },
@@ -23,7 +25,9 @@ app.use(express.json());
 
 app.use("/experts", require("./src/routes/expertRoutes"));
 app.use("/bookings", require("./src/routes/bookingRoutes"));
+app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin/admins", adminManagementRoutes);
 
 app.use(require("./src/middleware/errorHandler"));
 

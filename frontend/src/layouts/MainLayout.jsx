@@ -10,7 +10,7 @@ export default function MainLayout() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
-      <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 flex justify-between items-center h-16 shadow-lg sticky top-0 z-50">
+      <nav className="bg-linear-to-r from-indigo-600 to-purple-600 px-4 flex justify-between items-center h-16 shadow-lg sticky top-0 z-50">
         <Link to="/" className="flex items-center gap-2 no-underline">
           <span className="text-2xl">🎯</span>
           <span className="text-white text-lg font-bold tracking-tight">
