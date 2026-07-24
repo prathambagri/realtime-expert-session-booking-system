@@ -15,7 +15,7 @@ const AdminStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const data  = await getDashboardStats();
+        const data = await getDashboardStats();
         setStats(data);
       } catch (error) {
         console.error("Failed to load dashboard stats", error);
@@ -26,7 +26,7 @@ const AdminStats = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
       <DashboardCard title="Total Experts" value={stats.totalExperts} />
       <DashboardCard title="Total Bookings" value={stats.totalBookings} />
       <DashboardCard title="Pending" value={stats.pending} />

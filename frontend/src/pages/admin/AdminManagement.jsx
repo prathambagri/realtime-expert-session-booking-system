@@ -8,13 +8,12 @@ export default function AdminManagement() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [isAddOpen, setIsAddOpen] = useState(false);
-    
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -33,36 +32,34 @@ export default function AdminManagement() {
 
     fetchUsers();
   }, []);
-    
-    const handleUserUpdated = (updatedUser) => {
-      setUsers((prev) =>
-        prev.map((user) => (user._id === updatedUser._id ? updatedUser : user)),
+
+  const handleUserUpdated = (updatedUser) => {
+    setUsers((prev) =>
+      prev.map((user) => (user._id === updatedUser._id ? updatedUser : user)),
+    );
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this admin?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/admin/admins/${id}`,
       );
-    };
 
-    const handleDelete = async (id) => {
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete this admin?",
-      );
-
-      if (!confirmDelete) return;
-
-      try {
-        const { data } = await axios.delete(
-          `${import.meta.env.VITE_API_URL}/api/admin/admins/${id}`,
-        );
-
-        if (data.success) {
-          setUsers((prev) => prev.filter((admin) => admin._id !== id));
-          alert("Admin deleted successfully");
-        }
-      } catch (error) {
-        console.error(error);
-        alert(error.response?.data?.message || "Failed to delete admin");
+      if (data.success) {
+        setUsers((prev) => prev.filter((admin) => admin._id !== id));
+        alert("Admin deleted successfully");
       }
-    };
-
-
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Failed to delete admin");
+    }
+  };
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
@@ -91,83 +88,102 @@ export default function AdminManagement() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        Loading Admins...
+      <div className="flex h-60 items-center justify-center">
+        <p className="text-lg font-medium text-slate-500">Loading Admins...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Admin Management</h1>
-          <p className="text-gray-500 mt-1">Manage all administrators.</p>
-        </div>
+      <div className="rounded-xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-500 p-8 text-white shadow-lg">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight">
+              Admin Management
+            </h1>
 
-        <button
-          onClick={() => setIsAddOpen(true)}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-lg font-medium transition"
-        >
-          <MdPersonAdd size={20} />
-          Add Admin
-        </button>
+            <p className="mt-2 text-white/80">
+              Manage administrator accounts and permissions.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setIsAddOpen(true)}
+            className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-bold text-indigo-700 shadow-lg transition hover:-translate-y-px hover:shadow-lg"
+          >
+            <MdPersonAdd size={20} />
+            Add Admin
+          </button>
+        </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">Total Admins</p>
-          <h2 className="text-3xl font-bold mt-2 text-indigo-600">
+      {/* Statistics */}
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
+          <p className="text-sm uppercase tracking-wide text-slate-500">
+            Total Admins
+          </p>
+
+          <h2 className="mt-3 text-3xl font-extrabold text-indigo-600">
             {users.length}
           </h2>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">Active Admins</p>
-          <h2 className="text-3xl font-bold mt-2 text-green-600">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
+          <p className="text-sm uppercase tracking-wide text-slate-500">
+            Active Admins
+          </p>
+
+          <h2 className="mt-3 text-3xl font-extrabold text-green-600">
             {users.filter((u) => u.status === "Active").length}
           </h2>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">Inactive Admins</p>
-          <h2 className="text-3xl font-bold mt-2 text-red-600">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
+          <p className="text-sm uppercase tracking-wide text-slate-500">
+            Inactive Admins
+          </p>
+
+          <h2 className="mt-3 text-3xl font-extrabold text-red-600">
             {users.filter((u) => u.status === "Inactive").length}
           </h2>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">New Admins</p>
-          <h2 className="text-3xl font-bold mt-2 text-blue-600">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
+          <p className="text-sm uppercase tracking-wide text-slate-500">
+            New Admins
+          </p>
+
+          <h2 className="mt-3 text-3xl font-extrabold text-sky-600">
             {users.length}
           </h2>
         </div>
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
+        <div className="grid gap-4 md:grid-cols-[1fr_220px]">
+          <div className="relative">
             <MdSearch
-              className="absolute left-4 top-3.5 text-gray-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               size={20}
             />
 
             <input
               type="text"
-              placeholder="Search by name or email..."
+              placeholder="Search admin by name or email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full rounded-xl border border-slate-300 py-3 pl-12 pr-4 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
             />
           </div>
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500"
+            className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
           >
             <option>All</option>
             <option>Active</option>
@@ -177,16 +193,16 @@ export default function AdminManagement() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b">
-            <tr className="text-left">
-              <th className="px-6 py-4">Admins</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Joined At</th>
-              <th>Last Login</th>
-              <th className="text-center">Actions</th>
+          <thead className="bg-slate-100">
+            <tr className="text-left text-sm font-semibold uppercase tracking-wide text-slate-600">
+              <th className="px-6 py-5">Admin</th>
+              <th className="px-6 py-5">Email</th>
+              <th className="px-6 py-5">Status</th>
+              <th className="px-6 py-5">Joined</th>
+              <th className="px-6 py-5">Last Login</th>
+              <th className="px-6 py-5 text-center">Actions</th>
             </tr>
           </thead>
 
@@ -194,19 +210,19 @@ export default function AdminManagement() {
             {filteredUsers.map((user) => (
               <tr
                 key={user._id}
-                className="border-b hover:bg-gray-50 transition"
+                className="border-t border-slate-100 transition hover:bg-indigo-50/40"
               >
                 <td className="px-6 py-5">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     {user.image ? (
                       <img
                         src={user.image}
                         alt={user.name}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="h-11 w-11 rounded-full object-cover ring-2 ring-indigo-100"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-semibold">
-                        {(user.name || "U")
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-500 font-bold text-white">
+                        {(user.name || "A")
                           .split(" ")
                           .map((word) => word[0])
                           .join("")
@@ -215,17 +231,21 @@ export default function AdminManagement() {
                       </div>
                     )}
 
-                    <span className="font-medium text-gray-900">
-                      {user.name || "Unknown User"}
-                    </span>
+                    <div>
+                      <p className="font-semibold text-slate-900">
+                        {user.name || "Unknown Admin"}
+                      </p>
+
+                      <p className="text-sm text-slate-500">Administrator</p>
+                    </div>
                   </div>
                 </td>
 
-                <td>{user.email}</td>
+                <td className="px-6 py-5 text-slate-600">{user.email}</td>
 
-                <td>
+                <td className="px-6 py-5">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
                       user.status === "Active"
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
@@ -235,27 +255,31 @@ export default function AdminManagement() {
                   </span>
                 </td>
 
-                <td>{formatDate(user.createdAt)}</td>
+                <td className="px-6 py-5 text-slate-600">
+                  {formatDate(user.createdAt)}
+                </td>
 
-                <td>{formatDate(user.lastLogin)}</td>
+                <td className="px-6 py-5 text-slate-600">
+                  {formatDate(user.lastLogin)}
+                </td>
 
-                <td>
+                <td className="px-6 py-5">
                   <div className="flex justify-center gap-3">
                     <button
                       onClick={() => {
                         setSelectedUser(user);
                         setIsEditOpen(true);
                       }}
-                      className="text-indigo-600 hover:text-indigo-800"
+                      className="rounded-xl bg-amber-500 p-2 text-white transition hover:bg-amber-600"
                     >
-                      <MdEdit size={22} />
+                      <MdEdit size={18} />
                     </button>
 
                     <button
                       onClick={() => handleDelete(user._id)}
-                      className="text-red-600 hover:text-red-800"
+                      className="rounded-xl bg-red-500 p-2 text-white transition hover:bg-red-600"
                     >
-                      <MdBlock size={22} />
+                      <MdBlock size={18} />
                     </button>
                   </div>
                 </td>
@@ -264,8 +288,18 @@ export default function AdminManagement() {
 
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center py-10 text-gray-500">
-                  No Admins found.
+                <td colSpan={6} className="py-16 text-center">
+                  <div className="space-y-3">
+                    <div className="text-5xl">👨‍💼</div>
+
+                    <h3 className="text-xl font-semibold text-slate-700">
+                      No admins found
+                    </h3>
+
+                    <p className="text-slate-500">
+                      Try adjusting your search or filters.
+                    </p>
+                  </div>
                 </td>
               </tr>
             )}
@@ -275,15 +309,12 @@ export default function AdminManagement() {
 
       <EditUserModal
         isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        user={selectedUser}
-        onUpdated={(updatedAdmin) => {
-          setUsers((prev) =>
-            prev.map((admin) =>
-              admin._id === updatedAdmin._id ? updatedAdmin : admin,
-            ),
-          );
+        onClose={() => {
+          setIsEditOpen(false);
+          setSelectedUser(null);
         }}
+        user={selectedUser}
+        onUpdated={handleUserUpdated}
         apiUrl={`${import.meta.env.VITE_API_URL}/api/admin/admins`}
       />
 
@@ -293,8 +324,7 @@ export default function AdminManagement() {
         onCreated={(newAdmin) => {
           setUsers((prev) => [newAdmin, ...prev]);
         }}
-          />
-          
+      />
     </div>
   );
 }

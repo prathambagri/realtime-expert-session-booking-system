@@ -38,7 +38,7 @@ export default function ExpertModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-xl p-6">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-xl p-6">
         <h2 className="text-2xl font-bold mb-5">{title}</h2>
 
         <div className="grid gap-4">

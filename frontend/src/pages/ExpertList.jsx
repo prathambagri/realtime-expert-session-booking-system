@@ -57,13 +57,13 @@ const ExpertList = () => {
   return (
     <div>
       {/* Hero */}
-      <div className="relative mb-10 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 px-6 py-14 md:px-12 md:py-20 shadow-2xl">
+      <div className="relative mb-10 overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 px-6 py-14 md:px-12 md:py-20 shadow-lg">
         {/* Background Blur */}
         <div className="absolute -top-20 -right-16 h-64 w-64 rounded-full bg-indigo-400/20 blur-3xl"></div>
         <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-violet-400/10 blur-3xl"></div>
 
         <div className="relative mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+          <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-5xl">
             Find Your Perfect Expert
           </h1>
 
@@ -81,12 +81,12 @@ const ExpertList = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search experts..."
-              className="flex-1 rounded-2xl border border-white/10 bg-white px-5 py-4 text-slate-700 shadow-lg outline-none transition-all duration-300 placeholder:text-slate-400 focus:ring-4 focus:ring-indigo-300"
+              className="flex-1 rounded-lg border border-white/10 bg-white px-5 py-4 text-slate-700 shadow-lg outline-none transition-all duration-300 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-300"
             />
 
             <button
               type="submit"
-              className="rounded-2xl bg-white px-8 py-4 font-semibold text-indigo-600 shadow-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-700"
+              className="rounded-lg bg-white px-8 py-4 font-semibold text-indigo-600 shadow-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-700"
             >
               Search
             </button>
@@ -95,7 +95,7 @@ const ExpertList = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm font-semibold text-slate-500">
             Categories
@@ -142,7 +142,7 @@ const ExpertList = () => {
 
       {/* Error */}
       {error && (
-        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-red-700 shadow-sm">
+        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-5 py-4 text-red-700 shadow-sm">
           <div className="flex items-center gap-2">
             <span className="text-lg">⚠️</span>
             <span className="font-medium">{error}</span>
@@ -154,7 +154,7 @@ const ExpertList = () => {
       {!loading && !error && (
         <>
           {experts.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 py-20 text-center">
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 py-20 text-center">
               <div className="mb-4 text-6xl">🔍</div>
 
               <h2 className="text-2xl font-bold text-slate-800">

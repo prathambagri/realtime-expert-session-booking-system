@@ -8,6 +8,7 @@ const BookingForm = ({ expertId, selectedSlot, onSuccess }) => {
     phone: "",
     notes: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -27,6 +28,7 @@ const BookingForm = ({ expertId, selectedSlot, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const err = validate();
     if (err) return setError(err);
 
@@ -43,6 +45,7 @@ const BookingForm = ({ expertId, selectedSlot, onSuccess }) => {
         timeSlot: selectedSlot.time,
         notes: form.notes,
       });
+
       onSuccess();
     } catch (err) {
       setError(err.response?.data?.error || "Booking failed. Try again.");
@@ -51,98 +54,80 @@ const BookingForm = ({ expertId, selectedSlot, onSuccess }) => {
     }
   };
 
-  const inputStyle = {
-    width: "100%",
-    padding: "10px",
-    borderRadius: "8px",
-    border: "1px solid #D1D5DB",
-    fontSize: "14px",
-    marginTop: "4px",
-    boxSizing: "border-box",
-  };
-
-  const labelStyle = {
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#374151",
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div
-          style={{
-            background: "#FEE2E2",
-            color: "#991B1B",
-            padding: "10px",
-            borderRadius: "8px",
-            marginBottom: "16px",
-            fontSize: "14px",
-          }}
-        >
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {error}
         </div>
       )}
 
-      <div style={{ marginBottom: "16px" }}>
-        <label style={labelStyle}>Name</label>
+      <div>
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
+          Full Name
+        </label>
+
         <input
-          style={inputStyle}
           name="name"
           value={form.name}
           onChange={handleChange}
-          placeholder="Your full name"
+          placeholder="Enter your full name"
+          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
       </div>
 
-      <div style={{ marginBottom: "16px" }}>
-        <label style={labelStyle}>Email</label>
+      <div>
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
+          Email Address
+        </label>
+
         <input
-          style={inputStyle}
-          name="email"
           type="email"
+          name="email"
           value={form.email}
           onChange={handleChange}
           placeholder="your@email.com"
+          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
       </div>
 
-      <div style={{ marginBottom: "16px" }}>
-        <label style={labelStyle}>Phone</label>
+      <div>
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
+          Phone Number
+        </label>
+
         <input
-          style={inputStyle}
           name="phone"
           value={form.phone}
           onChange={handleChange}
           placeholder="10 digit phone number"
+          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
       </div>
 
-      <div style={{ marginBottom: "16px" }}>
-        <label style={labelStyle}>Notes (optional)</label>
+      <div>
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
+          Notes (Optional)
+        </label>
+
         <textarea
-          style={{ ...inputStyle, height: "80px", resize: "vertical" }}
           name="notes"
           value={form.notes}
           onChange={handleChange}
-          placeholder="Any additional notes..."
+          rows={4}
+          placeholder="Any additional information..."
+          className="w-full resize-y rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        style={{
-          width: "100%",
-          padding: "12px",
-          background: loading ? "#9CA3AF" : "#4F46E5",
-          color: "#fff",
-          border: "none",
-          borderRadius: "8px",
-          fontSize: "16px",
-          fontWeight: "600",
-          cursor: loading ? "not-allowed" : "pointer",
-        }}
+        className={`w-full rounded-xl px-6 py-3 text-base font-semibold text-white shadow-lg transition ${
+          loading
+            ? "cursor-not-allowed bg-slate-400"
+            : "bg-gradient-to-r from-indigo-600 to-violet-600 hover:-translate-y-px hover:shadow-lg"
+        }`}
       >
         {loading ? "Booking..." : "Confirm Booking"}
       </button>

@@ -21,7 +21,7 @@ const ExpertCard = ({ expert }) => {
   return (
     <div
       onClick={() => navigate(`/experts/${expert._id}`)}
-      className="group relative cursor-pointer overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl"
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg"
     >
       {/* Top accent line */}
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-600 to-violet-500" />
@@ -29,7 +29,7 @@ const ExpertCard = ({ expert }) => {
       {/* Header */}
       <div className="mb-5 flex items-start gap-4">
         {/* Avatar */}
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-500 text-lg font-bold text-white shadow-md">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-violet-500 text-lg font-bold text-white shadow-md">
           {initials}
         </div>
         <div style={{ flex: 1 }}>

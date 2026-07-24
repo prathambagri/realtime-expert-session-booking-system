@@ -7,46 +7,57 @@ import {
   MdAdminPanelSettings,
 } from "react-icons/md";
 
-
 export default function Sidebar() {
   const linkClasses = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-      isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-gray-100"
+    `group flex items-center gap-3 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
+      isActive
+        ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md"
+        : "text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"
     }`;
 
   return (
-    <aside className="w-64 min-h-screen bg-white border-r border-gray-200 shadow-sm">
-      <div className="p-6 border-b">
-        <h1 className="text-2xl font-bold text-indigo-600">ExpertBook</h1>
-        <p className="text-sm text-gray-500">Admin Panel</p>
+    <aside className="flex min-h-screen w-64 flex-col border-r border-slate-200 bg-white shadow-md">
+      {/* Logo */}
+      <div className="border-b border-slate-200 px-6 py-6">
+        <h1 className="text-2xl font-extrabold tracking-tight text-indigo-700">
+          ExpertBook
+        </h1>
+
+        <p className="mt-1 text-sm text-slate-500">Admin Panel</p>
       </div>
 
-      <nav className="p-4 space-y-2">
+      {/* Navigation */}
+      <nav className="flex-1 space-y-1.5 p-4">
         <NavLink to="/admin" end className={linkClasses}>
           <MdDashboard size={22} />
-          Dashboard
+          <span>Dashboard</span>
         </NavLink>
 
         <NavLink to="/admin/experts" className={linkClasses}>
           <MdPeople size={22} />
-          Experts
+          <span>Experts</span>
         </NavLink>
 
         <NavLink to="/admin/bookings" className={linkClasses}>
           <MdEventNote size={22} />
-          Bookings
+          <span>Bookings</span>
         </NavLink>
 
         <NavLink to="/admin/users" className={linkClasses}>
           <MdManageAccounts size={22} />
-          User Management
+          <span>Users</span>
         </NavLink>
 
         <NavLink to="/admin/admins" className={linkClasses}>
           <MdAdminPanelSettings size={22} />
-          Admin Management
+          <span>Admins</span>
         </NavLink>
       </nav>
+
+      {/* Footer */}
+      <div className="border-t border-slate-200 px-6 py-4">
+        <p className="text-xs text-slate-400">ExpertBook Admin v1.0</p>
+      </div>
     </aside>
   );
 }

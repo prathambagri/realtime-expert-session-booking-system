@@ -108,17 +108,20 @@ const ExpertDetail = () => {
       <button
         onClick={() => navigate("/")}
         style={{
-          background: "none",
-          border: "none",
-          color: "#4F46E5",
+          background: "#fff",
+          border: "1px solid #E5E7EB",
+          color: "#374151",
           cursor: "pointer",
           fontSize: "14px",
-          marginBottom: "20px",
-          padding: 0,
-          fontWeight: "500",
-          display: "flex",
+          marginBottom: "24px",
+          padding: "10px 18px",
+          fontWeight: "600",
+          display: "inline-flex",
           alignItems: "center",
-          gap: "4px",
+          gap: "6px",
+          borderRadius: "12px",
+          transition: "all .2s",
+          boxShadow: "0 2px 8px rgba(0,0,0,.05)",
         }}
       >
         ← Back to Experts
@@ -128,18 +131,19 @@ const ExpertDetail = () => {
       <div
         style={{
           background: "#fff",
-          borderRadius: "20px",
+          borderRadius: "24px",
           overflow: "hidden",
-          border: "1px solid #F3F4F6",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-          marginBottom: "24px",
+          border: "1px solid #E5E7EB",
+          boxShadow: "0 12px 35px rgba(15,23,42,.08)",
+          marginBottom: "28px",
         }}
       >
         {/* Banner */}
         <div
           style={{
             height: "100px",
-            background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
+            background:
+              "linear-gradient(135deg,#4338CA 0%,#6366F1 55%,#8B5CF6 100%)",
           }}
         />
 
@@ -150,7 +154,7 @@ const ExpertDetail = () => {
               width: "80px",
               height: "80px",
               borderRadius: "20px",
-              background: "linear-gradient(135deg, #4F46E5, #7C3AED)",
+              background: "linear-gradient(135deg,#4338CA,#7C3AED)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -160,7 +164,7 @@ const ExpertDetail = () => {
               marginTop: "-40px",
               marginBottom: "16px",
               border: "4px solid #fff",
-              boxShadow: "0 4px 12px rgba(79,70,229,0.3)",
+              boxShadow: "0 10px 24px rgba(99,102,241,.25)",
             }}
           >
             {initials}
@@ -179,9 +183,10 @@ const ExpertDetail = () => {
               <h2
                 style={{
                   margin: "0 0 8px",
-                  fontSize: "26px",
+                  fontSize: "30px",
                   fontWeight: "800",
                   color: "#111827",
+                  letterSpacing: "-.5px",
                 }}
               >
                 {expert.name}
@@ -215,11 +220,11 @@ const ExpertDetail = () => {
             </div>
             <div
               style={{
-                background: "#FEF3C7",
-                color: "#92400E",
+                background: "#FFF8E6",
+                color: "#B45309",
                 padding: "10px 18px",
                 borderRadius: "14px",
-                fontSize: "20px",
+                fontSize: "18px",
                 fontWeight: "800",
                 display: "flex",
                 alignItems: "center",
@@ -232,8 +237,8 @@ const ExpertDetail = () => {
 
           <p
             style={{
-              color: "#6B7280",
-              fontSize: "15px",
+              color: "#4B5563",
+              fontSize: "16px",
               lineHeight: "1.7",
               marginTop: "16px",
             }}
@@ -247,10 +252,10 @@ const ExpertDetail = () => {
       <div
         style={{
           background: "#fff",
-          borderRadius: "20px",
+          borderRadius: "24px",
           padding: "28px",
-          border: "1px solid #F3F4F6",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+          border: "1px solid #E5E7EB",
+          boxShadow: "0 12px 35px rgba(15,23,42,.06)",
           marginBottom: "24px",
         }}
       >
@@ -282,7 +287,7 @@ const ExpertDetail = () => {
           width: "100%",
           padding: "16px",
           background: selectedSlot
-            ? "linear-gradient(135deg, #4F46E5, #7C3AED)"
+            ? "linear-gradient(135deg,#4338CA,#7C3AED)"
             : "#E5E7EB",
           color: selectedSlot ? "#fff" : "#9CA3AF",
           border: "none",
@@ -290,7 +295,7 @@ const ExpertDetail = () => {
           fontSize: "16px",
           fontWeight: "700",
           cursor: selectedSlot ? "pointer" : "not-allowed",
-          boxShadow: selectedSlot ? "0 4px 12px rgba(79,70,229,0.3)" : "none",
+          boxShadow: selectedSlot ? "0 8px 20px rgba(99,102,241,.30))" : "none",
           transition: "all 0.2s",
         }}
       >
