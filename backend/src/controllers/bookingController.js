@@ -45,13 +45,13 @@ exports.createBooking = async (req, res) => {
 
     emitSlotBooked(String(expertId), date, timeSlot);
 
-    // await sendBookingConfirmation({
-    //   name,
-    //   email,
-    //   expertName: updated.name,
-    //   date,
-    //   timeSlot,
-    // });
+    await sendBookingConfirmation({
+      name,
+      email,
+      expertName: updated.name,
+      date,
+      timeSlot,
+    });
 
     res.status(201).json(booking);
   } catch (err) {

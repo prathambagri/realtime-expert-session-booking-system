@@ -1,18 +1,6 @@
-const dns = require("dns");
+const { Resend } = require("resend");
 
-const nodemailer = require("nodemailer");
-
-dns.setDefaultResultOrder("ipv4first");
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendBookingConfirmation = async ({
   name,
@@ -22,8 +10,8 @@ const sendBookingConfirmation = async ({
   timeSlot,
 }) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"ExpertBook" <${process.env.EMAIL_USER}>`,
+    const { data, error } = await resend.emails.send({
+      from: "ExpertBook <onboarding@resend.dev>",
       to: email,
       subject: "🎉 Booking Confirmed - ExpertBook",
       html: `
@@ -59,12 +47,18 @@ const sendBookingConfirmation = async ({
       `,
     });
 
-    console.log("✅ Gmail Email Sent");
-    console.log("Message ID:", info.messageId);
-  } catch (error) {
-    console.error("❌ Gmail Email Error");
-    console.error(error);
+    if (error) {
+      console.error("❌ Resend Error:", error);
+      return;
+    }
+
+    console.log("✅ Booking confirmation email sent");
+    console.log("Email ID:", data?.id);
+  } catch (err) {
+    console.error("❌ Failed to send booking confirmation:", err);
   }
 };
 
-module.exports = { sendBookingConfirmation };
+module.exports = {
+  sendBookingConfirmation,
+};
