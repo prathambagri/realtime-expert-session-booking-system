@@ -74,29 +74,35 @@ exports.updateBookingStatus = async (req, res) => {
 
     if (!booking) return res.status(404).json({ error: "Booking not found" });
 
-    // if cancelled, free the slot and notify all users
-    // if cancelled, free the slot and notify all users
-    if (status === "cancelled") {
+    // Free the slot when the booking is cancelled or completed
+    if (status === "cancelled" || status === "completed") {
       await Expert.findOneAndUpdate(
         {
           _id: booking.expertId,
           "availableSlots.date": booking.date,
           "availableSlots.time": booking.timeSlot,
         },
-        { $set: { "availableSlots.$.isBooked": false } },
+        {
+          $set: {
+            "availableSlots.$.isBooked": false,
+          },
+        },
       );
 
       emitSlotFreed(String(booking.expertId), booking.date, booking.timeSlot);
 
-      const expert = await Expert.findById(booking.expertId);
+      // Send cancellation email only when cancelled
+      if (status === "cancelled") {
+        const expert = await Expert.findById(booking.expertId);
 
-      await sendBookingCancellation({
-        name: booking.name,
-        email: booking.email,
-        expertName: expert.name,
-        date: booking.date,
-        timeSlot: booking.timeSlot,
-      });
+        await sendBookingCancellation({
+          name: booking.name,
+          email: booking.email,
+          expertName: expert.name,
+          date: booking.date,
+          timeSlot: booking.timeSlot,
+        });
+      }
     }
 
     res.json(booking);

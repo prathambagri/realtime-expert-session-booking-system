@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import API from "../api/axios";
 import ExpertCard from "../components/ExpertCard";
 import SkeletonCard from "../components/SkeletonCard";
+import AIBookingAssistant from "../components/AIBookingAssistant";
 
 const CATEGORIES = ["All", "Design", "Engineering", "Marketing", "Finance"];
 
@@ -93,6 +94,9 @@ const ExpertList = () => {
           </form>
         </div>
       </div>
+
+      {/* AI Assistant */}
+      <AIBookingAssistant />
 
       {/* Filter Bar */}
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">

@@ -87,7 +87,11 @@ const MyBookings = () => {
     }
   };
 
-  const activeBookings = bookings.filter((b) => b.status !== "cancelled");
+  const activeBookings = bookings.filter((b) =>
+    ["pending", "confirmed"].includes(b.status),
+  );
+
+  const completedBookings = bookings.filter((b) => b.status === "completed");
 
   const cancelledBookings = bookings.filter((b) => b.status === "cancelled");
 
@@ -222,12 +226,49 @@ const MyBookings = () => {
                           </div>
                         )}
 
-                        <button
-                          onClick={() => cancelBooking(booking._id)}
-                          className="rounded-xl border border-red-200 bg-red-50 px-5 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100"
-                        >
-                          Cancel Booking
-                        </button>
+                        {["pending", "confirmed"].includes(booking.status) && (
+                          <button
+                            onClick={() => cancelBooking(booking._id)}
+                            className="rounded-xl border border-red-200 bg-red-50 px-5 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100"
+                          >
+                            Cancel Booking
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {completedBookings.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="mb-4 text-lg font-bold text-green-700">
+                    Completed Sessions
+                    <span className="ml-2 rounded-full bg-green-100 px-3 py-1 text-sm font-semibold text-green-700">
+                      {completedBookings.length}
+                    </span>
+                  </h3>
+
+                  <div className="space-y-4">
+                    {completedBookings.map((booking) => (
+                      <div
+                        key={booking._id}
+                        className="rounded-xl border border-green-200 bg-green-50 p-5"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                          <div>
+                            <h4 className="mb-2 font-semibold text-slate-800">
+                              {booking.expertId?.name || "Expert"}
+                            </h4>
+
+                            <div className="flex gap-4 text-sm text-slate-600">
+                              <span>📅 {booking.date}</span>
+                              <span>⏰ {booking.timeSlot}</span>
+                            </div>
+                          </div>
+
+                          <StatusBadge status={booking.status} />
+                        </div>
                       </div>
                     ))}
                   </div>

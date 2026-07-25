@@ -9,6 +9,10 @@ const { Server } = require("socket.io");
 const { initSocket } = require("./src/socket");
 const adminRoutes = require("./src/routes/adminRoutes");
 const userRoutes = require("./src/routes/userRoutes");
+const aiRoutes = require("./src/routes/aiRoutes");
+const aiPreparationRoutes = require("./src/routes/aiPreparationRoutes");
+const aiChatRoutes = require("./src/routes/aiChatRoutes");
+const aiBookingRoutes = require("./src/routes/aiBookingRoutes");
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -28,6 +32,10 @@ app.use("/bookings", require("./src/routes/bookingRoutes"));
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/admins", adminManagementRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/ai", aiPreparationRoutes);
+app.use("/api/ai", aiChatRoutes);
+app.use("/api/ai", aiBookingRoutes);
 
 app.use(require("./src/middleware/errorHandler"));
 

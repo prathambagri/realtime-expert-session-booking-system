@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import BookingForm from "../components/BookingForm";
+import AILearningAssistant from "../components/AILearningAssistant";
 
 const Booking = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const Booking = () => {
 
   if (success) {
     return (
-      <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "850px", margin: "0 auto" }}>
         <div
           style={{
             background: "#fff",
@@ -58,6 +59,7 @@ const Booking = () => {
             textAlign: "center",
           }}
         >
+          {/* Success Header */}
           <div
             style={{
               background:
@@ -81,6 +83,7 @@ const Booking = () => {
           </div>
 
           <div style={{ padding: "34px" }}>
+            {/* Session Details */}
             <div
               style={{
                 background: "#F9FAFB",
@@ -135,7 +138,8 @@ const Booking = () => {
               </p>
             </div>
 
-            <div style={{ display: "flex", gap: "12px" }}>
+            {/* Action Buttons */}
+            <div style={{ display: "flex", gap: "12px", marginBottom: "32px" }}>
               <button
                 onClick={() => navigate("/")}
                 style={{
@@ -171,11 +175,15 @@ const Booking = () => {
                 My Bookings
               </button>
             </div>
+
+            {/* AI Learning Assistant */}
+            <AILearningAssistant expertId={expert._id} />
           </div>
         </div>
       </div>
     );
   }
+
   return (
     <div style={{ maxWidth: "560px", margin: "0 auto" }}>
       <button
@@ -208,7 +216,6 @@ const Booking = () => {
           boxShadow: "0 12px 35px rgba(15,23,42,.08)",
         }}
       >
-        {/* Header */}
         <div
           style={{
             background:
@@ -240,7 +247,6 @@ const Booking = () => {
         </div>
 
         <div style={{ padding: "32px" }}>
-          {/* Session Summary */}
           <div
             style={{
               background: "#F9FAFB",
@@ -286,6 +292,7 @@ const Booking = () => {
 
           <BookingForm
             expertId={id}
+            expert={expert}
             selectedSlot={selectedSlot}
             onSuccess={() => setSuccess(true)}
           />
