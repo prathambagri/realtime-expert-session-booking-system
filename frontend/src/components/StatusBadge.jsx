@@ -1,9 +1,25 @@
 const StatusBadge = ({ status }) => {
   const styles = {
-    pending: { background: "#FEF3C7", color: "#92400E" },
-    confirmed: { background: "#D1FAE5", color: "#065F46" },
-    completed: { background: "#DBEAFE", color: "#1E40AF" },
-    cancelled: { background: "#FEE2E2", color: "#991B1B" },
+    pending: {
+      background: "#FEF9C3",
+      color: "#A16207",
+      border: "1px solid #FDE047",
+    },
+    confirmed: {
+      background: "#DCFCE7",
+      color: "#15803D",
+      border: "1px solid #BBF7D0",
+    },
+    completed: {
+      background: "#DBEAFE",
+      color: "#1D4ED8",
+      border: "1px solid #BFDBFE",
+    },
+    cancelled: {
+      background: "#FEE2E2",
+      color: "#DC2626",
+      border: "1px solid #FCA5A5",
+    },
   };
 
   return (

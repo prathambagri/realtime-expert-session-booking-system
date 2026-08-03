@@ -4,6 +4,13 @@ import API from "../api/axios";
 import SlotPicker from "../components/SlotPicker";
 import useSocket from "../hooks/useSocket";
 
+const CATEGORY_COLORS = {
+  Design: { bg: "#F3E8FF", color: "#7C3AED", border: "#DDD6FE" },
+  Engineering: { bg: "#EFF6FF", color: "#1D4ED8", border: "#BFDBFE" },
+  Marketing: { bg: "#DCFCE7", color: "#15803D", border: "#BBF7D0" },
+  Finance: { bg: "#FEF9C3", color: "#A16207", border: "#FDE047" },
+};
+
 const ExpertDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -46,9 +53,6 @@ const ExpertDetail = () => {
       }
     },
     (data) => {
-      console.log("slotFreed received:", data);
-      console.log("current id:", id);
-      console.log("match?", String(data.expertId) === String(id));
       if (String(data.expertId) === String(id)) {
         setExpert((prev) => {
           if (!prev) return prev;
@@ -65,16 +69,9 @@ const ExpertDetail = () => {
     },
   );
 
-  const CATEGORY_COLORS = {
-    Design: { bg: "#EDE9FE", color: "#5B21B6" },
-    Engineering: { bg: "#DBEAFE", color: "#1E40AF" },
-    Marketing: { bg: "#D1FAE5", color: "#065F46" },
-    Finance: { bg: "#FEF3C7", color: "#92400E" },
-  };
-
   if (loading)
     return (
-      <div style={{ textAlign: "center", padding: "80px", color: "#6B7280" }}>
+      <div style={{ textAlign: "center", padding: "80px", color: "#64748B" }}>
         <div style={{ fontSize: "32px", marginBottom: "12px" }}>⏳</div>
         Loading...
       </div>
@@ -84,19 +81,21 @@ const ExpertDetail = () => {
     return (
       <div
         style={{
-          background: "#FEE2E2",
-          color: "#991B1B",
           padding: "16px",
-          borderRadius: "12px",
+          borderRadius: "10px",
+          border: "1px solid #FCA5A5",
+          background: "#FEF2F2",
+          color: "#DC2626",
         }}
       >
         {error}
       </div>
     );
 
-  const catColor = CATEGORY_COLORS[expert.category] || {
-    bg: "#F3F4F6",
-    color: "#374151",
+  const cat = CATEGORY_COLORS[expert.category] || {
+    bg: "#F1F5F9",
+    color: "#475569",
+    border: "#CBD5E1",
   };
   const initials = expert.name
     .split(" ")
@@ -105,23 +104,32 @@ const ExpertDetail = () => {
 
   return (
     <div style={{ maxWidth: "780px", margin: "0 auto" }}>
+      {/* Back Button */}
       <button
         onClick={() => navigate("/")}
         style={{
           background: "#fff",
-          border: "1px solid #E5E7EB",
-          color: "#374151",
+          border: "1.5px solid #E2E8F0",
+          color: "#64748B",
           cursor: "pointer",
           fontSize: "14px",
           marginBottom: "24px",
-          padding: "10px 18px",
-          fontWeight: "600",
+          padding: "8px 16px",
+          fontWeight: "500",
           display: "inline-flex",
           alignItems: "center",
           gap: "6px",
-          borderRadius: "12px",
-          transition: "all .2s",
-          boxShadow: "0 2px 8px rgba(0,0,0,.05)",
+          borderRadius: "8px",
+          transition: "all 0.15s",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "#16A34A";
+          e.currentTarget.style.color = "#16A34A";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "#E2E8F0";
+          e.currentTarget.style.color = "#64748B";
         }}
       >
         ← Back to Experts
@@ -131,11 +139,11 @@ const ExpertDetail = () => {
       <div
         style={{
           background: "#fff",
-          borderRadius: "24px",
+          borderRadius: "20px",
           overflow: "hidden",
-          border: "1px solid #E5E7EB",
-          boxShadow: "0 12px 35px rgba(15,23,42,.08)",
-          marginBottom: "28px",
+          border: "1.5px solid #E2E8F0",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+          marginBottom: "20px",
         }}
       >
         {/* Banner */}
@@ -143,28 +151,52 @@ const ExpertDetail = () => {
           style={{
             height: "100px",
             background:
-              "linear-gradient(135deg,#4338CA 0%,#6366F1 55%,#8B5CF6 100%)",
+              "linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #15803d 100%)",
+            position: "relative",
+            overflow: "hidden",
           }}
-        />
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "-20px",
+              right: "-20px",
+              width: "120px",
+              height: "120px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.05)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+        </div>
 
         <div style={{ padding: "0 28px 28px" }}>
           {/* Avatar */}
           <div
             style={{
-              width: "80px",
-              height: "80px",
-              borderRadius: "20px",
-              background: "linear-gradient(135deg,#4338CA,#7C3AED)",
+              width: "72px",
+              height: "72px",
+              borderRadius: "16px",
+              background: "linear-gradient(135deg, #16A34A, #22C55E)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              fontSize: "28px",
+              fontSize: "24px",
               fontWeight: "800",
-              marginTop: "-40px",
+              marginTop: "-36px",
               marginBottom: "16px",
-              border: "4px solid #fff",
-              boxShadow: "0 10px 24px rgba(99,102,241,.25)",
+              border: "3px solid #fff",
+              boxShadow: "0 8px 24px rgba(22,163,74,0.25)",
+              position:"relative"
             }}
           >
             {initials}
@@ -182,11 +214,11 @@ const ExpertDetail = () => {
             <div>
               <h2
                 style={{
-                  margin: "0 0 8px",
-                  fontSize: "30px",
+                  margin: "0 0 10px",
+                  fontSize: "26px",
                   fontWeight: "800",
-                  color: "#111827",
-                  letterSpacing: "-.5px",
+                  color: "#0F172A",
+                  letterSpacing: "-0.5px",
                 }}
               >
                 {expert.name}
@@ -194,11 +226,12 @@ const ExpertDetail = () => {
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                 <span
                   style={{
-                    background: catColor.bg,
-                    color: catColor.color,
+                    background: cat.bg,
+                    color: cat.color,
+                    border: `1px solid ${cat.border}`,
                     padding: "4px 14px",
                     borderRadius: "999px",
-                    fontSize: "13px",
+                    fontSize: "12px",
                     fontWeight: "600",
                   }}
                 >
@@ -206,24 +239,26 @@ const ExpertDetail = () => {
                 </span>
                 <span
                   style={{
-                    background: "#F3F4F6",
-                    color: "#374151",
+                    background: "#F1F5F9",
+                    color: "#475569",
+                    border: "1px solid #E2E8F0",
                     padding: "4px 14px",
                     borderRadius: "999px",
-                    fontSize: "13px",
+                    fontSize: "12px",
                     fontWeight: "500",
                   }}
                 >
-                  {expert.experience} years experience
+                  {expert.experience} years exp
                 </span>
               </div>
             </div>
             <div
               style={{
-                background: "#FFF8E6",
-                color: "#B45309",
-                padding: "10px 18px",
-                borderRadius: "14px",
+                background: "#FEF9C3",
+                border: "1px solid #FDE047",
+                color: "#A16207",
+                padding: "8px 16px",
+                borderRadius: "10px",
                 fontSize: "18px",
                 fontWeight: "800",
                 display: "flex",
@@ -237,8 +272,8 @@ const ExpertDetail = () => {
 
           <p
             style={{
-              color: "#4B5563",
-              fontSize: "16px",
+              color: "#475569",
+              fontSize: "15px",
               lineHeight: "1.7",
               marginTop: "16px",
             }}
@@ -252,20 +287,20 @@ const ExpertDetail = () => {
       <div
         style={{
           background: "#fff",
-          borderRadius: "24px",
-          padding: "28px",
-          border: "1px solid #E5E7EB",
-          boxShadow: "0 12px 35px rgba(15,23,42,.06)",
-          marginBottom: "24px",
+          borderRadius: "16px",
+          padding: "24px",
+          border: "1.5px solid #E2E8F0",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+          marginBottom: "20px",
         }}
       >
         <h3
           style={{
             marginTop: 0,
             marginBottom: "20px",
-            fontSize: "18px",
+            fontSize: "16px",
             fontWeight: "700",
-            color: "#111827",
+            color: "#0F172A",
           }}
         >
           🗓 Available Time Slots
@@ -287,15 +322,15 @@ const ExpertDetail = () => {
           width: "100%",
           padding: "16px",
           background: selectedSlot
-            ? "linear-gradient(135deg,#4338CA,#7C3AED)"
-            : "#E5E7EB",
-          color: selectedSlot ? "#fff" : "#9CA3AF",
+            ? "linear-gradient(135deg, #16A34A, #22C55E)"
+            : "#E2E8F0",
+          color: selectedSlot ? "#fff" : "#94A3B8",
           border: "none",
-          borderRadius: "14px",
-          fontSize: "16px",
+          borderRadius: "12px",
+          fontSize: "15px",
           fontWeight: "700",
           cursor: selectedSlot ? "pointer" : "not-allowed",
-          boxShadow: selectedSlot ? "0 8px 20px rgba(99,102,241,.30))" : "none",
+          boxShadow: selectedSlot ? "0 4px 20px rgba(22,163,74,0.3)" : "none",
           transition: "all 0.2s",
         }}
       >

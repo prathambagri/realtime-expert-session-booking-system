@@ -11,32 +11,67 @@ const AILoading = () => {
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-6 rounded-2xl border border-indigo-100 bg-indigo-50 p-6"
+      style={{
+        marginTop: "20px",
+        borderRadius: "12px",
+        border: "1px solid #BBF7D0",
+        background: "#F0FDF4",
+        padding: "24px",
+      }}
     >
-      <div className="flex items-center gap-3">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
-
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            border: "3px solid #16A34A",
+            borderTopColor: "transparent",
+            animation: "spin 0.8s linear infinite",
+            flexShrink: 0,
+          }}
+        />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         <div>
-          <h3 className="font-bold text-slate-800">
+          <h3
+            style={{
+              margin: 0,
+              fontWeight: "700",
+              color: "#0F172A",
+              fontSize: "14px",
+            }}
+          >
             🤖 AI is analyzing your request
           </h3>
-
-          <p className="text-sm text-slate-500">Please wait a few seconds...</p>
+          <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>
+            Please wait a few seconds...
+          </p>
         </div>
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
         {steps.map((step, index) => (
           <motion.div
             key={step}
             initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{
-              delay: index * 0.5,
+            transition={{ delay: index * 0.5 }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              color: "#15803D",
+              fontSize: "13px",
             }}
-            className="flex items-center gap-2 text-slate-700"
           >
-            <span>✔</span>
+            <span style={{ color: "#16A34A" }}>✔</span>
             <span>{step}</span>
           </motion.div>
         ))}

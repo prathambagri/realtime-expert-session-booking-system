@@ -1,5 +1,4 @@
 const SlotPicker = ({ slots, selectedSlot, onSelectSlot }) => {
-  // Group slots by date
   const grouped = slots.reduce((acc, slot) => {
     if (!acc[slot.date]) acc[slot.date] = [];
     acc[slot.date].push(slot);
@@ -9,11 +8,20 @@ const SlotPicker = ({ slots, selectedSlot, onSelectSlot }) => {
   return (
     <div>
       {Object.entries(grouped).map(([date, dateSlots]) => (
-        <div key={date} style={{ marginBottom: "20px" }}>
-          <h4 style={{ color: "#374151", marginBottom: "10px" }}>
+        <div key={date} style={{ marginBottom: "24px" }}>
+          <h4
+            style={{
+              color: "#64748B",
+              marginBottom: "12px",
+              fontSize: "12px",
+              fontWeight: "600",
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+            }}
+          >
             📅 {new Date(date).toDateString()}
           </h4>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             {dateSlots.map((slot) => (
               <button
                 key={slot._id}
@@ -22,24 +30,25 @@ const SlotPicker = ({ slots, selectedSlot, onSelectSlot }) => {
                 style={{
                   padding: "8px 16px",
                   borderRadius: "8px",
-                  border: "1px solid",
+                  border: "1.5px solid",
                   cursor: slot.isBooked ? "not-allowed" : "pointer",
-                  fontSize: "14px",
-                  transition: "all 0.2s",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                  transition: "all 0.15s",
                   borderColor: slot.isBooked
-                    ? "#E5E7EB"
+                    ? "#E2E8F0"
                     : selectedSlot?._id === slot._id
-                      ? "#4F46E5"
-                      : "#D1D5DB",
+                      ? "#16A34A"
+                      : "#E2E8F0",
                   background: slot.isBooked
-                    ? "#F3F4F6"
+                    ? "#F8FAFC"
                     : selectedSlot?._id === slot._id
-                      ? "#4F46E5"
+                      ? "#DCFCE7"
                       : "#fff",
                   color: slot.isBooked
-                    ? "#9CA3AF"
+                    ? "#CBD5E1"
                     : selectedSlot?._id === slot._id
-                      ? "#fff"
+                      ? "#15803D"
                       : "#374151",
                 }}
               >

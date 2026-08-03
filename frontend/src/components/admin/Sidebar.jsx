@@ -8,55 +8,126 @@ import {
 } from "react-icons/md";
 
 export default function Sidebar() {
-  const linkClasses = ({ isActive }) =>
-    `group flex items-center gap-3 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
-      isActive
-        ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md"
-        : "text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"
-    }`;
-
   return (
-    <aside className="flex min-h-screen w-64 flex-col border-r border-slate-200 bg-white shadow-md">
+    <aside
+      style={{
+        width: "240px",
+        minHeight: "100vh",
+        background: "#fff",
+        borderRight: "1px solid #E2E8F0",
+        display: "flex",
+        flexDirection: "column",
+        boxShadow: "2px 0 8px rgba(0,0,0,0.04)",
+      }}
+    >
       {/* Logo */}
-      <div className="border-b border-slate-200 px-6 py-6">
-        <h1 className="text-2xl font-extrabold tracking-tight text-indigo-700">
-          ExpertBook
-        </h1>
-
-        <p className="mt-1 text-sm text-slate-500">Admin Panel</p>
+      <div
+        style={{
+          padding: "24px 20px",
+          borderBottom: "1px solid #E2E8F0",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div
+            style={{
+              width: "32px",
+              height: "32px",
+              borderRadius: "8px",
+              background: "linear-gradient(135deg, #16A34A, #22C55E)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "16px",
+            }}
+          >
+            🎯
+          </div>
+          <div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "15px",
+                fontWeight: "800",
+                color: "#0F172A",
+              }}
+            >
+              ExpertBook
+            </p>
+            <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>
+              Admin Panel
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 space-y-1.5 p-4">
-        <NavLink to="/admin" end className={linkClasses}>
-          <MdDashboard size={22} />
-          <span>Dashboard</span>
-        </NavLink>
-
-        <NavLink to="/admin/experts" className={linkClasses}>
-          <MdPeople size={22} />
-          <span>Experts</span>
-        </NavLink>
-
-        <NavLink to="/admin/bookings" className={linkClasses}>
-          <MdEventNote size={22} />
-          <span>Bookings</span>
-        </NavLink>
-
-        <NavLink to="/admin/users" className={linkClasses}>
-          <MdManageAccounts size={22} />
-          <span>Users</span>
-        </NavLink>
-
-        <NavLink to="/admin/admins" className={linkClasses}>
-          <MdAdminPanelSettings size={22} />
-          <span>Admins</span>
-        </NavLink>
+      {/* Nav */}
+      <nav style={{ flex: 1, padding: "16px 12px" }}>
+        {[
+          {
+            to: "/admin",
+            icon: <MdDashboard size={20} />,
+            label: "Dashboard",
+            end: true,
+          },
+          {
+            to: "/admin/experts",
+            icon: <MdPeople size={20} />,
+            label: "Experts",
+          },
+          {
+            to: "/admin/bookings",
+            icon: <MdEventNote size={20} />,
+            label: "Bookings",
+          },
+          {
+            to: "/admin/users",
+            icon: <MdManageAccounts size={20} />,
+            label: "Users",
+          },
+          {
+            to: "/admin/admins",
+            icon: <MdAdminPanelSettings size={20} />,
+            label: "Admins",
+          },
+        ].map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            style={({ isActive }) => ({
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "10px 14px",
+              borderRadius: "8px",
+              marginBottom: "4px",
+              textDecoration: "none",
+              fontSize: "14px",
+              fontWeight: "500",
+              transition: "all 0.15s",
+              background: isActive ? "#DCFCE7" : "transparent",
+              color: isActive ? "#15803D" : "#64748B",
+              borderLeft: isActive
+                ? "3px solid #16A34A"
+                : "3px solid transparent",
+            })}
+          >
+            {item.icon}
+            {item.label}
+          </NavLink>
+        ))}
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-slate-200 px-6 py-4">
-        <p className="text-xs text-slate-400">ExpertBook Admin v1.0</p>
+      <div
+        style={{
+          padding: "16px 20px",
+          borderTop: "1px solid #E2E8F0",
+        }}
+      >
+        <p style={{ margin: 0, fontSize: "11px", color: "#CBD5E1" }}>
+          ExpertBook Admin v1.0
+        </p>
       </div>
     </aside>
   );

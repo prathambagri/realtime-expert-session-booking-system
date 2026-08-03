@@ -43,7 +43,16 @@ const AdminRoute = ({ children }) => {
           </p>
           <a
             href="/"
-            className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold text-sm no-underline hover:bg-indigo-700"
+            style={{
+              padding: "10px 24px",
+              background: "#16A34A",
+              color: "#fff",
+              borderRadius: "8px",
+              fontWeight: "600",
+              fontSize: "14px",
+              textDecoration: "none",
+              display: "inline-block",
+            }}
           >
             Go to Home
           </a>
@@ -82,7 +91,19 @@ export default function App() {
                       You need to sign in to book a session with an expert.
                     </p>
                     <SignInButton mode="modal">
-                      <button className="px-6 py-3 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold cursor-pointer border-none">
+                      <button
+                        style={{
+                          padding: "12px 28px",
+                          background: "#16A34A",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "10px",
+                          fontWeight: "600",
+                          fontSize: "15px",
+                          cursor: "pointer",
+                          boxShadow: "0 4px 16px rgba(22,163,74,0.3)",
+                        }}
+                      >
                         Sign In to Continue
                       </button>
                     </SignInButton>

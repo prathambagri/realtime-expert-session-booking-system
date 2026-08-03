@@ -23,18 +23,13 @@ const AIBookingAssistant = () => {
 
   const handleAskAI = async () => {
     if (!query.trim()) return;
-
     try {
       setLoading(true);
       setError("");
       setRecommendations([]);
-
       const res = await recommendExpert(query);
-
       setRecommendations(res.recommendations || []);
     } catch (err) {
-      console.error(err);
-
       setError(
         err.response?.data?.message ||
           "Unable to get AI recommendation. Please try again.",
@@ -45,44 +40,155 @@ const AIBookingAssistant = () => {
   };
 
   return (
-    <div className="mb-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg">
-      <h2 className="text-2xl font-bold text-slate-800">🤖 AI Expert Finder</h2>
+    <div
+      style={{
+        marginBottom: "32px",
+        borderRadius: "16px",
+        border: "1.5px solid #E2E8F0",
+        background: "#fff",
+        padding: "28px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          marginBottom: "8px",
+        }}
+      >
+        <div
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "8px",
+            background: "#DCFCE7",
+            border: "1px solid #BBF7D0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "18px",
+          }}
+        >
+          🤖
+        </div>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: "18px",
+            fontWeight: "700",
+            color: "#0F172A",
+          }}
+        >
+          AI Expert Finder
+        </h2>
+      </div>
 
-      <p className="mt-2 text-slate-500">
-        Tell us what you're working on or where you need help, and AI will
-        recommend the experts best suited to assist you.
+      <p
+        style={{
+          color: "#64748B",
+          fontSize: "13px",
+          marginBottom: "20px",
+          lineHeight: "1.6",
+        }}
+      >
+        Tell us what you're working on and AI will recommend the best expert for
+        you.
       </p>
 
       {/* Suggestion Chips */}
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          marginBottom: "20px",
+        }}
+      >
         {suggestions.map((item) => (
           <button
             key={item}
-            type="button"
             onClick={() => setQuery(item)}
-            className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 transition hover:bg-indigo-200"
+            style={{
+              padding: "6px 14px",
+              borderRadius: "999px",
+              border: "1.5px solid",
+              borderColor: query === item ? "#16A34A" : "#E2E8F0",
+              background: query === item ? "#DCFCE7" : "#F8FAFC",
+              color: query === item ? "#15803D" : "#64748B",
+              fontSize: "12px",
+              fontWeight: "500",
+              cursor: "pointer",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              if (query !== item) {
+                e.currentTarget.style.borderColor = "#16A34A";
+                e.currentTarget.style.color = "#15803D";
+                e.currentTarget.style.background = "#F0FDF4";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (query !== item) {
+                e.currentTarget.style.borderColor = "#E2E8F0";
+                e.currentTarget.style.color = "#64748B";
+                e.currentTarget.style.background = "#F8FAFC";
+              }
+            }}
           >
             {item}
           </button>
         ))}
       </div>
 
-      {/* Input */}
+      {/* Textarea */}
       <textarea
         rows={4}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Example: I'm building a React application and need help fixing authentication after login..."
-        className="mt-5 w-full rounded-xl border border-slate-300 p-4 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+        placeholder="Example: I'm building a React app and need help with authentication..."
+        style={{
+          width: "100%",
+          padding: "14px",
+          background: "#F8FAFC",
+          border: "1.5px solid #E2E8F0",
+          borderRadius: "10px",
+          color: "#0F172A",
+          fontSize: "14px",
+          outline: "none",
+          resize: "vertical",
+          boxSizing: "border-box",
+          fontFamily: "inherit",
+          lineHeight: "1.6",
+        }}
+        onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+        onBlur={(e) => (e.target.style.borderColor = "#E2E8F0")}
       />
 
       {/* Button */}
       <button
         onClick={handleAskAI}
-        disabled={loading}
-        className="mt-4 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+        disabled={loading || !query.trim()}
+        style={{
+          marginTop: "12px",
+          padding: "12px 24px",
+          background: loading || !query.trim() ? "#E2E8F0" : "#16A34A",
+          color: loading || !query.trim() ? "#94A3B8" : "#fff",
+          border: "none",
+          borderRadius: "8px",
+          fontSize: "14px",
+          fontWeight: "600",
+          cursor: loading || !query.trim() ? "not-allowed" : "pointer",
+          transition: "all 0.15s",
+          boxShadow:
+            loading || !query.trim()
+              ? "none"
+              : "0 4px 16px rgba(22,163,74,0.3)",
+        }}
       >
-        {loading ? "🔎 Finding the Best Expert..." : "🔍 Find the Best Expert"}
+        {loading ? "🔎 Finding Best Expert..." : "🔍 Find the Best Expert"}
       </button>
 
       {/* Loading */}
@@ -90,68 +196,177 @@ const AIBookingAssistant = () => {
 
       {/* Error */}
       {error && (
-        <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-red-600">
+        <div
+          style={{
+            marginTop: "16px",
+            padding: "14px",
+            borderRadius: "10px",
+            border: "1px solid #FCA5A5",
+            background: "#FEF2F2",
+            color: "#DC2626",
+            fontSize: "13px",
+          }}
+        >
           {error}
         </div>
       )}
 
       {/* Empty State */}
       {!loading && recommendations.length === 0 && !error && (
-        <div className="mt-8 rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500">
-          💡 Describe your project, problem, or learning goal, and AI will
-          recommend the most suitable experts for you.
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "24px",
+            borderRadius: "10px",
+            border: "2px dashed #E2E8F0",
+            textAlign: "center",
+            color: "#94A3B8",
+            fontSize: "13px",
+            background: "#F8FAFC",
+          }}
+        >
+          💡 Describe your project or problem and AI will find the most suitable
+          expert for you.
         </div>
       )}
 
-      {/* Recommendations */}
+      {/* Recommendations Header */}
       {recommendations.length > 0 && (
-        <div className="mt-8 rounded-xl bg-indigo-50 border border-indigo-100 p-4">
-          <h3 className="text-lg font-semibold text-indigo-800">
+        <div
+          style={{
+            marginTop: "24px",
+            padding: "16px",
+            borderRadius: "10px",
+            border: "1px solid #BBF7D0",
+            background: "#F0FDF4",
+          }}
+        >
+          <h3
+            style={{
+              margin: "0 0 4px",
+              fontSize: "15px",
+              fontWeight: "700",
+              color: "#15803D",
+            }}
+          >
             🎯 Recommended Experts
           </h3>
-
-          <p className="mt-1 text-sm text-slate-600">
-            Based on your request, AI has selected the experts who best match
-            your needs.
+          <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>
+            Based on your request, AI selected the experts who best match your
+            needs.
           </p>
         </div>
       )}
+
+      {/* Recommendation Cards */}
       {recommendations.map((item, index) => (
         <motion.div
           key={item.expert?._id || index}
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: index * 0.2 }}
-          className="mt-8 rounded-2xl border border-indigo-100 bg-white p-6 shadow-md"
+          style={{
+            marginTop: "16px",
+            borderRadius: "12px",
+            border: "1.5px solid #E2E8F0",
+            background: "#F8FAFC",
+            padding: "20px",
+          }}
         >
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-slate-800">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "12px",
+            }}
+          >
+            <h3
+              style={{
+                margin: 0,
+                fontSize: "14px",
+                fontWeight: "700",
+                color: "#0F172A",
+              }}
+            >
               {index === 0
                 ? "🥇 Best Match"
                 : index === 1
-                  ? "🥈 Alternative Match"
-                  : "🥉 Alternative Match"}
+                  ? "🥈 Alternative"
+                  : "🥉 Alternative"}
             </h3>
-
-            <span className="rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700">
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "999px",
+                background: "#DCFCE7",
+                border: "1px solid #BBF7D0",
+                color: "#15803D",
+                fontSize: "12px",
+                fontWeight: "700",
+              }}
+            >
               {item.confidence}% Match
             </span>
           </div>
 
-          <div className="mt-4 rounded-xl bg-indigo-50 p-4">
-            <h4 className="font-semibold text-slate-800">Why this expert?</h4>
-
-            <p className="mt-2 text-slate-700">{item.reason}</p>
+          {/* Why this expert */}
+          <div
+            style={{
+              padding: "12px 16px",
+              borderRadius: "8px",
+              background: "#F0FDF4",
+              border: "1px solid #BBF7D0",
+              marginBottom: "12px",
+            }}
+          >
+            <p
+              style={{
+                margin: "0 0 4px",
+                fontSize: "12px",
+                fontWeight: "600",
+                color: "#15803D",
+              }}
+            >
+              Why this expert?
+            </p>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "13px",
+                color: "#475569",
+                lineHeight: "1.6",
+              }}
+            >
+              {item.reason}
+            </p>
           </div>
 
-          <div className="mt-5">
-            <h4 className="font-semibold text-slate-800">Strengths</h4>
-
-            <div className="mt-3 flex flex-wrap gap-2">
+          {/* Strengths */}
+          <div style={{ marginBottom: "16px" }}>
+            <p
+              style={{
+                margin: "0 0 8px",
+                fontSize: "12px",
+                fontWeight: "600",
+                color: "#64748B",
+              }}
+            >
+              Strengths
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
               {(item.strengths || []).map((skill) => (
                 <span
                   key={skill}
-                  className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700"
+                  style={{
+                    padding: "3px 10px",
+                    borderRadius: "999px",
+                    background: "#DCFCE7",
+                    border: "1px solid #BBF7D0",
+                    color: "#15803D",
+                    fontSize: "11px",
+                    fontWeight: "500",
+                  }}
                 >
                   ✓ {skill}
                 </span>
@@ -159,13 +374,7 @@ const AIBookingAssistant = () => {
             </div>
           </div>
 
-          {item.expert && (
-            <>
-              <div className="mt-6">
-                <ExpertCard expert={item.expert} />
-              </div>
-            </>
-          )}
+          {item.expert && <ExpertCard expert={item.expert} />}
         </motion.div>
       ))}
     </div>

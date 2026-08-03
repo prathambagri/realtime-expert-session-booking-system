@@ -1,12 +1,12 @@
-const SkeletonCard = () => {
+export default function SkeletonCard() {
   return (
     <div
       style={{
         background: "#fff",
+        border: "1.5px solid #E2E8F0",
         borderRadius: "16px",
         padding: "24px",
-        border: "1px solid #F3F4F6",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+        overflow: "hidden",
       }}
     >
       <style>{`
@@ -14,69 +14,57 @@ const SkeletonCard = () => {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
         }
-        .skeleton {
-          background: linear-gradient(90deg, #F3F4F6 25%, #E5E7EB 50%, #F3F4F6 75%);
+        .sk {
+          background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
           background-size: 200% 100%;
           animation: shimmer 1.5s infinite;
-          border-radius: 8px;
+          border-radius: 6px;
         }
       `}</style>
 
-      {/* Top accent */}
-      <div
-        style={{ height: "4px", borderRadius: "4px", marginBottom: "20px" }}
-        className="skeleton"
-      />
-
-      {/* Header row */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "14px",
-          marginBottom: "16px",
-        }}
-      >
-        {/* Avatar */}
+      <div style={{ display: "flex", gap: "14px", marginBottom: "16px" }}>
         <div
-          className="skeleton"
+          className="sk"
           style={{
-            width: "52px",
-            height: "52px",
-            borderRadius: "14px",
+            width: "48px",
+            height: "48px",
+            borderRadius: "12px",
             flexShrink: 0,
           }}
         />
         <div style={{ flex: 1 }}>
           <div
-            className="skeleton"
-            style={{ height: "18px", width: "60%", marginBottom: "8px" }}
+            className="sk"
+            style={{ height: "16px", width: "55%", marginBottom: "8px" }}
           />
-          <div className="skeleton" style={{ height: "14px", width: "40%" }} />
+          <div className="sk" style={{ height: "12px", width: "35%" }} />
         </div>
         <div
-          className="skeleton"
-          style={{ width: "52px", height: "32px", borderRadius: "10px" }}
+          className="sk"
+          style={{ width: "52px", height: "28px", borderRadius: "8px" }}
         />
       </div>
 
-      {/* Bio lines */}
       <div
-        className="skeleton"
-        style={{ height: "14px", width: "100%", marginBottom: "8px" }}
+        className="sk"
+        style={{ height: "13px", width: "100%", marginBottom: "6px" }}
       />
       <div
-        className="skeleton"
-        style={{ height: "14px", width: "80%", marginBottom: "20px" }}
+        className="sk"
+        style={{ height: "13px", width: "75%", marginBottom: "20px" }}
       />
 
-      {/* Button */}
       <div
-        className="skeleton"
-        style={{ height: "40px", width: "100%", borderRadius: "10px" }}
-      />
+        style={{
+          borderTop: "1px solid #F1F5F9",
+          paddingTop: "14px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="sk" style={{ height: "12px", width: "30%" }} />
+        <div className="sk" style={{ height: "12px", width: "15%" }} />
+      </div>
     </div>
   );
-};
-
-export default SkeletonCard;
+}

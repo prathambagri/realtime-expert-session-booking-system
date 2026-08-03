@@ -9,42 +9,27 @@ const BookingForm = ({ expertId, expert, selectedSlot, onSuccess }) => {
     phone: "",
     notes: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [improving, setImproving] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleImproveNotes = async () => {
-    if (improving) return;
-
-    if (!form.notes.trim()) {
+    if (improving || !form.notes.trim())
       return setError("Please describe your problem before using AI.");
-    }
-
     try {
       setImproving(true);
       setError("");
-
       const res = await improveBookingDescription(
         form.notes,
         expert.name,
         expert.category,
       );
-
-      setForm((prev) => ({
-        ...prev,
-        notes: res.improvedDescription,
-      }));
+      setForm((prev) => ({ ...prev, notes: res.improvedDescription }));
     } catch (err) {
-      console.error(err);
-
       setError(err.response?.data?.message || "Failed to improve description.");
     } finally {
       setImproving(false);
@@ -53,34 +38,21 @@ const BookingForm = ({ expertId, expert, selectedSlot, onSuccess }) => {
 
   const validate = () => {
     if (!form.name.trim()) return "Name is required.";
-
     if (!form.email.trim()) return "Email is required.";
-
     if (!/\S+@\S+\.\S+/.test(form.email)) return "Invalid email address.";
-
     if (!form.phone.trim()) return "Phone number is required.";
-
-    if (!/^\d{10}$/.test(form.phone))
-      return "Phone number must contain exactly 10 digits.";
-
+    if (!/^\d{10}$/.test(form.phone)) return "Phone must be exactly 10 digits.";
     if (!selectedSlot) return "Please select a time slot.";
-
     return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const validationError = validate();
-
-    if (validationError) {
-      return setError(validationError);
-    }
-
+    const err = validate();
+    if (err) return setError(err);
     try {
       setLoading(true);
       setError("");
-
       await API.post("/bookings", {
         expertId,
         name: form.name,
@@ -90,11 +62,8 @@ const BookingForm = ({ expertId, expert, selectedSlot, onSuccess }) => {
         timeSlot: selectedSlot.time,
         notes: form.notes,
       });
-
       onSuccess();
     } catch (err) {
-      console.error(err);
-
       setError(
         err.response?.data?.error || "Booking failed. Please try again.",
       );
@@ -102,86 +71,134 @@ const BookingForm = ({ expertId, expert, selectedSlot, onSuccess }) => {
       setLoading(false);
     }
   };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "12px 16px",
+    background: '#F8FAFC',
+    border: '1.5px solid #E2E8F0',
+    borderRadius: '8px',
+    color: '#0F172A',
+    fontSize: "14px",
+    outline: "none",
+    boxSizing: "border-box",
+    fontFamily: "inherit",
+  };
+
+  const labelStyle = {
+    display: "block",
+    marginBottom: "8px",
+    fontSize: "13px",
+    fontWeight: "600",
+    color: "#475569",
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+    >
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <div
+          style={{
+            padding: "12px 16px",
+            borderRadius: "8px",
+            border: "1px solid #FCA5A5",
+            background: "#FEF2F2",
+            color: "#DC2626",
+            fontSize: "13px",
+          }}
+        >
           {error}
         </div>
       )}
 
       <div>
-        <label className="mb-2 block text-sm font-semibold text-slate-700">
-          Full Name
-        </label>
-
+        <label style={labelStyle}>Full Name</label>
         <input
           name="name"
           value={form.name}
           onChange={handleChange}
           placeholder="Enter your full name"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          style={inputStyle}
+          onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+          onBlur={(e) => (e.target.style.borderColor = "#E2E8F0")}
         />
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold text-slate-700">
-          Email Address
-        </label>
-
+        <label style={labelStyle}>Email Address</label>
         <input
           type="email"
           name="email"
           value={form.email}
           onChange={handleChange}
           placeholder="your@email.com"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          style={inputStyle}
+          onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+          onBlur={(e) => (e.target.style.borderColor = "#E2E8F0")}
         />
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold text-slate-700">
-          Phone Number
-        </label>
-
+        <label style={labelStyle}>Phone Number</label>
         <input
           name="phone"
           value={form.phone}
           onChange={handleChange}
           placeholder="10 digit phone number"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          style={inputStyle}
+          onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+          onBlur={(e) => (e.target.style.borderColor = "#E2E8F0")}
         />
       </div>
 
       <div>
-        <div className="mb-2 flex items-center justify-between">
-          <label className="block text-sm font-semibold text-slate-700">
-            Describe Your Problem (Optional)
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "8px",
+          }}
+        >
+          <label style={{ ...labelStyle, marginBottom: 0 }}>
+            Describe Your Problem
           </label>
-
           <button
             type="button"
             onClick={handleImproveNotes}
             disabled={improving || !form.notes.trim()}
-            className="rounded-lg bg-indigo-50 px-3 py-1.5 text-sm font-semibold text-indigo-600 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50"
+            style={{
+              padding: "5px 12px",
+              background: "#DCFCE7",
+              border: "1px solid #BBF7D0",
+              borderRadius: "6px",
+              color: "#15803D",
+              fontSize: "12px",
+              fontWeight: "600",
+              cursor:
+                improving || !form.notes.trim() ? "not-allowed" : "pointer",
+              opacity: improving || !form.notes.trim() ? 0.5 : 1,
+            }}
           >
             {improving ? "🤖 Improving..." : "✨ Improve with AI"}
           </button>
         </div>
-
         <textarea
           name="notes"
           value={form.notes}
           onChange={handleChange}
           rows={5}
           placeholder="Describe the issue you'd like help with..."
-          className="w-full resize-y rounded-xl border border-slate-300 px-4 py-3 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          style={{ ...inputStyle, resize: "vertical" }}
+          onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+          onBlur={(e) => (e.target.style.borderColor = "#E2E8F0")}
         />
-
         {form.notes.trim() && !improving && (
-          <p className="mt-2 text-xs text-slate-500">
-            💡 AI can rewrite your description to make it clearer and more
-            professional for the expert.
+          <p style={{ margin: "6px 0 0", fontSize: "12px", color: "#64748B" }}>
+            💡 AI can rewrite your description to make it clearer for the
+            expert.
           </p>
         )}
       </div>
@@ -189,11 +206,19 @@ const BookingForm = ({ expertId, expert, selectedSlot, onSuccess }) => {
       <button
         type="submit"
         disabled={loading}
-        className={`w-full rounded-xl px-6 py-3 text-base font-semibold text-white shadow-lg transition ${
-          loading
-            ? "cursor-not-allowed bg-slate-400"
-            : "bg-gradient-to-r from-indigo-600 to-violet-600 hover:-translate-y-px hover:shadow-lg"
-        }`}
+        style={{
+          width: "100%",
+          padding: "14px",
+          background: loading ? "#E2E8F0" : "#16A34A",
+          color: loading ? "#94A3B8" : "#fff",
+          boxShadow: loading ? "none" : "0 4px 16px rgba(22,163,74,0.3)",
+          border: "none",
+          borderRadius: "8px",
+          fontSize: "15px",
+          fontWeight: "700",
+          cursor: loading ? "not-allowed" : "pointer",
+          transition: "all 0.15s",
+        }}
       >
         {loading ? "Booking..." : "Confirm Booking"}
       </button>

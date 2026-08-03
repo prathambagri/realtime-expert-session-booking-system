@@ -10,15 +10,10 @@ import ExpertModal from "../../components/admin/ExpertModal";
 export default function Experts() {
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [showForm, setShowForm] = useState(false);
   const [selectedExpert, setSelectedExpert] = useState(null);
-
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
-  const [experience, setExperience] = useState("");
-  const [status, setStatus] = useState("");
-
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -26,24 +21,16 @@ export default function Experts() {
 
   useEffect(() => {
     fetchExperts();
-  }, [page, search, category, experience, status]);
+  }, [page, search, category]);
 
   const fetchExperts = async () => {
     try {
       setLoading(true);
-
-      const data = await getAllExperts({
-        page,
-        search,
-        category,
-        experience,
-        status,
-      });
-
+      const data = await getAllExperts({ page, search, category });
       setExperts(data.experts);
       setTotalPages(data.totalPages);
-    } catch (error) {
-      console.error("Failed to fetch experts:", error);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -56,250 +43,380 @@ export default function Experts() {
       } else {
         await createExpert(data);
       }
-
       await fetchExperts();
-
       setShowForm(false);
       setSelectedExpert(null);
-
-      alert(
-        selectedExpert
-          ? "Expert updated successfully!"
-          : "Expert added successfully!",
-      );
-    } catch (error) {
-      console.error(error);
+      alert(selectedExpert ? "Expert updated!" : "Expert added!");
+    } catch (err) {
       alert("Operation failed.");
     }
   };
 
   const handleDeleteExpert = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this expert?",
-    );
-
-    if (!confirmed) return;
-
+    if (!window.confirm("Are you sure you want to delete this expert?")) return;
     try {
       await deleteExpert(id);
-
       await fetchExperts();
-
-      alert("Expert deleted successfully!");
-    } catch (error) {
-      console.error(error);
+      alert("Expert deleted!");
+    } catch (err) {
       alert("Failed to delete expert.");
     }
   };
 
-  if (loading) {
+  const inputStyle = {
+    padding: "10px 14px",
+    borderRadius: "8px",
+    border: "1.5px solid #E2E8F0",
+    fontSize: "13px",
+    outline: "none",
+    background: "#fff",
+    color: "#0F172A",
+  };
+
+  if (loading)
     return (
-      <div className="flex h-60 items-center justify-center">
-        <p className="text-lg font-medium text-slate-500">Loading experts...</p>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: "80px",
+          color: "#64748B",
+        }}
+      >
+        Loading experts...
       </div>
     );
-  }
 
   return (
-    <div className="space-y-8">
+    <div>
       {/* Header */}
-
-      <div className="rounded-xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-500 p-8 text-white shadow-lg">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-3xl font-extrabold tracking-tight">Experts</h1>
-
-            <p className="mt-2 text-white/80">
-              Manage experts, edit profiles and add new specialists.
-            </p>
-
-            <div className="mt-6 inline-flex rounded-lg bg-white/15 px-5 py-3 backdrop-blur-sm">
-              <div>
-                <p className="text-xs uppercase tracking-wider text-white/70">
-                  Total Experts
-                </p>
-
-                <p className="text-3xl font-bold">{experts.length}</p>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              setSelectedExpert(null);
-              setShowForm(true);
-            }}
-            className="rounded-lg bg-white px-6 py-3 font-bold text-indigo-700 shadow-lg transition hover:-translate-y-px hover:shadow-lg"
+      <div
+        style={{
+          background:
+            "linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #15803d 100%)",
+          borderRadius: "16px",
+          padding: "28px 32px",
+          marginBottom: "24px",
+          color: "#fff",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "16px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div style={{ position: "relative" }}>
+          <h1
+            style={{ margin: "0 0 4px", fontSize: "24px", fontWeight: "800" }}
           >
-            + Add Expert
-          </button>
+            Experts
+          </h1>
+          <p
+            style={{
+              margin: 0,
+              color: "rgba(255,255,255,0.7)",
+              fontSize: "13px",
+            }}
+          >
+            Manage expert profiles and add new specialists.
+          </p>
+          <div
+            style={{
+              marginTop: "16px",
+              display: "inline-block",
+              background: "rgba(255,255,255,0.15)",
+              borderRadius: "8px",
+              padding: "8px 16px",
+            }}
+          >
+            <p
+              style={{
+                margin: "0 0 2px",
+                fontSize: "10px",
+                color: "rgba(255,255,255,0.6)",
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
+              }}
+            >
+              Total Experts
+            </p>
+            <p style={{ margin: 0, fontSize: "24px", fontWeight: "800" }}>
+              {experts.length}
+            </p>
+          </div>
         </div>
+        <button
+          onClick={() => {
+            setSelectedExpert(null);
+            setShowForm(true);
+          }}
+          style={{
+            background: "#fff",
+            color: "#15803D",
+            border: "none",
+            borderRadius: "8px",
+            padding: "10px 20px",
+            fontWeight: "700",
+            fontSize: "14px",
+            cursor: "pointer",
+            position: "relative",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          }}
+        >
+          + Add Expert
+        </button>
       </div>
 
       {/* Filters */}
-
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-          <input
-            type="text"
-            placeholder="Search expert..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-          />
-
-          <select
-            value={category}
-            onChange={(e) => {
-              setCategory(e.target.value);
-              setPage(1);
-            }}
-            className="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-          >
-            <option value="">All Categories</option>
-
-            {categories.map((cat) => (
-              <option key={cat}>{cat}</option>
-            ))}
-          </select>
-
-          <select
-            value={experience}
-            onChange={(e) => {
-              setExperience(e.target.value);
-              setPage(1);
-            }}
-            className="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-          >
-            <option value="">Experience</option>
-            <option value="1">1+ Years</option>
-            <option value="3">3+ Years</option>
-            <option value="5">5+ Years</option>
-            <option value="10">10+ Years</option>
-          </select>
-
-          <select
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setPage(1);
-            }}
-            className="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-          >
-            <option value="">Status</option>
-            <option value="Available">Available</option>
-            <option value="Fully Booked">Fully Booked</option>
-          </select>
-
-          <button
-            onClick={() => {
-              setSearch("");
-              setCategory("");
-              setExperience("");
-              setStatus("");
-              setPage(1);
-            }}
-            className="rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 font-semibold transition hover:bg-slate-200"
-          >
-            Reset Filters
-          </button>
-        </div>
-      </div>
-      {/* Pagination */}
-      <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage((p) => p - 1)}
-          className="rounded-xl border border-slate-200 px-5 py-2 font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "12px",
+          padding: "20px",
+          border: "1.5px solid #E2E8F0",
+          marginBottom: "20px",
+          display: "flex",
+          gap: "12px",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Search expert..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          style={{ ...inputStyle, flex: 1, minWidth: "160px" }}
+          onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+          onBlur={(e) => (e.target.style.borderColor = "#E2E8F0")}
+        />
+        <select
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setPage(1);
+          }}
+          style={{ ...inputStyle, minWidth: "140px" }}
         >
-          ← Previous
-        </button>
-
-        <div className="rounded-xl bg-indigo-50 px-5 py-2 text-sm font-semibold text-indigo-700">
-          Page {page} of {totalPages}
-        </div>
-
+          <option value="">All Categories</option>
+          {categories.map((cat) => (
+            <option key={cat}>{cat}</option>
+          ))}
+        </select>
         <button
-          disabled={page === totalPages}
-          onClick={() => setPage((p) => p + 1)}
-          className="rounded-xl border border-slate-200 px-5 py-2 font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={() => {
+            setSearch("");
+            setCategory("");
+            setPage(1);
+          }}
+          style={{
+            padding: "10px 16px",
+            borderRadius: "8px",
+            border: "1.5px solid #E2E8F0",
+            background: "#F8FAFC",
+            color: "#64748B",
+            fontSize: "13px",
+            fontWeight: "500",
+            cursor: "pointer",
+          }}
         >
-          Next →
+          Reset
         </button>
       </div>
 
-      {/* Experts Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-        <table className="w-full border-collapse">
-          <thead className="bg-slate-100">
-            <tr className="text-left text-sm font-semibold uppercase tracking-wide text-slate-600">
-              <th className="p-5">Expert</th>
-              <th className="p-5">Category</th>
-              <th className="p-5">Experience</th>
-              <th className="p-5">Rating</th>
-              <th className="p-5 text-center">Actions</th>
+      {/* Table */}
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "12px",
+          border: "1.5px solid #E2E8F0",
+          overflow: "hidden",
+          marginBottom: "20px",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+        }}
+      >
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr
+              style={{
+                background: "#F8FAFC",
+                borderBottom: "1px solid #E2E8F0",
+              }}
+            >
+              {["Expert", "Category", "Experience", "Rating", "Actions"].map(
+                (h) => (
+                  <th
+                    key={h}
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: h === "Actions" ? "center" : "left",
+                      fontSize: "11px",
+                      fontWeight: "700",
+                      color: "#94A3B8",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    {h}
+                  </th>
+                ),
+              )}
             </tr>
           </thead>
-
           <tbody>
-            {experts.map((expert) => (
+            {experts.map((expert, i) => (
               <tr
                 key={expert._id}
-                className="border-t border-slate-100 transition hover:bg-indigo-50/40"
+                style={{
+                  borderTop: i > 0 ? "1px solid #F1F5F9" : "none",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#F0FDF4")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
               >
-                <td className="p-5">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-violet-500 font-bold text-white">
+                <td style={{ padding: "14px 16px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "10px",
+                        background: "linear-gradient(135deg, #16A34A, #22C55E)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontSize: "14px",
+                        fontWeight: "700",
+                        flexShrink: 0,
+                      }}
+                    >
                       {expert.name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
                     </div>
-
                     <div>
-                      <p className="font-semibold text-slate-900">
+                      <p
+                        style={{
+                          margin: "0 0 2px",
+                          fontWeight: "600",
+                          color: "#0F172A",
+                          fontSize: "14px",
+                        }}
+                      >
                         {expert.name}
                       </p>
-
-                      <p className="text-sm text-slate-500">Expert Profile</p>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: "12px",
+                          color: "#94A3B8",
+                        }}
+                      >
+                        Expert Profile
+                      </p>
                     </div>
                   </div>
                 </td>
-
-                <td className="p-5">
-                  <span className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
+                <td style={{ padding: "14px 16px" }}>
+                  <span
+                    style={{
+                      background: "#DCFCE7",
+                      color: "#15803D",
+                      border: "1px solid #BBF7D0",
+                      padding: "3px 10px",
+                      borderRadius: "999px",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                    }}
+                  >
                     {expert.category}
                   </span>
                 </td>
-
-                <td className="p-5 font-medium text-slate-700">
+                <td
+                  style={{
+                    padding: "14px 16px",
+                    color: "#475569",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
                   {expert.experience} yrs
                 </td>
-
-                <td className="p-5">
-                  <span className="font-semibold text-amber-500">
+                <td style={{ padding: "14px 16px" }}>
+                  <span
+                    style={{
+                      color: "#A16207",
+                      fontWeight: "700",
+                      fontSize: "14px",
+                    }}
+                  >
                     ⭐ {expert.rating}
                   </span>
                 </td>
-
-                <td className="p-5">
-                  <div className="flex justify-center gap-3">
+                <td style={{ padding: "14px 16px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "8px",
+                    }}
+                  >
                     <button
                       onClick={() => {
                         setSelectedExpert(expert);
                         setShowForm(true);
                       }}
-                      className="rounded-xl bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600"
+                      style={{
+                        padding: "6px 14px",
+                        background: "#FEF9C3",
+                        color: "#A16207",
+                        border: "1px solid #FDE047",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                      }}
                     >
                       Edit
                     </button>
-
                     <button
                       onClick={() => handleDeleteExpert(expert._id)}
-                      className="rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600"
+                      style={{
+                        padding: "6px 14px",
+                        background: "#FEE2E2",
+                        color: "#DC2626",
+                        border: "1px solid #FCA5A5",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                      }}
                     >
                       Delete
                     </button>
@@ -311,7 +428,62 @@ export default function Experts() {
         </table>
       </div>
 
-      {/* Expert Modal */}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+            style={{
+              padding: "8px 16px",
+              borderRadius: "8px",
+              border: "1.5px solid #E2E8F0",
+              background: "#fff",
+              color: page === 1 ? "#CBD5E1" : "#64748B",
+              cursor: page === 1 ? "not-allowed" : "pointer",
+              fontSize: "13px",
+            }}
+          >
+            ← Previous
+          </button>
+          <span
+            style={{
+              padding: "8px 16px",
+              background: "#DCFCE7",
+              border: "1px solid #BBF7D0",
+              borderRadius: "8px",
+              color: "#15803D",
+              fontSize: "13px",
+              fontWeight: "700",
+            }}
+          >
+            Page {page} of {totalPages}
+          </span>
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            style={{
+              padding: "8px 16px",
+              borderRadius: "8px",
+              border: "1.5px solid #E2E8F0",
+              background: "#fff",
+              color: page === totalPages ? "#CBD5E1" : "#64748B",
+              cursor: page === totalPages ? "not-allowed" : "pointer",
+              fontSize: "13px",
+            }}
+          >
+            Next →
+          </button>
+        </div>
+      )}
+
       <ExpertModal
         isOpen={showForm}
         onClose={() => {

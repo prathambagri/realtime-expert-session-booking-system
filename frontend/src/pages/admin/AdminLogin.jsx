@@ -2,72 +2,171 @@ import { SignIn } from "@clerk/clerk-react";
 
 export default function AdminLogin() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-violet-100 px-4">
-      <div className="w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-lg lg:grid lg:grid-cols-2">
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#FAFAF8",
+        padding: "24px",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "900px",
+          background: "#fff",
+          borderRadius: "20px",
+          overflow: "hidden",
+          border: "1.5px solid #E2E8F0",
+          boxShadow: "0 24px 48px rgba(0,0,0,0.1)",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+        }}
+      >
         {/* Left Side */}
-        <div className="hidden flex-col justify-center bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-600 p-12 text-white lg:flex">
-          <div className="mb-8 text-6xl">🎯</div>
-
-          <h1 className="text-3xl font-extrabold leading-tight">
-            ExpertBook
-            <br />
-            Admin Panel
-          </h1>
-
-          <p className="mt-6 text-lg text-indigo-100 leading-8">
-            Securely manage experts, bookings, users and platform analytics from
-            one powerful dashboard.
-          </p>
-
-          <div className="mt-12 space-y-4 text-indigo-100">
-            <div className="flex items-center gap-3">
-              <span>✔</span>
-              <span>Manage Experts</span>
+        <div
+          style={{
+            background:
+              "linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #15803d 100%)",
+            padding: "48px 40px",
+            color: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                width: "56px",
+                height: "56px",
+                borderRadius: "14px",
+                background: "rgba(255,255,255,0.15)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "28px",
+                marginBottom: "24px",
+                border: "1px solid rgba(255,255,255,0.2)",
+              }}
+            >
+              🎯
             </div>
 
-            <div className="flex items-center gap-3">
-              <span>✔</span>
-              <span>Track Bookings</span>
-            </div>
+            <h1
+              style={{
+                margin: "0 0 8px",
+                fontSize: "28px",
+                fontWeight: "800",
+                letterSpacing: "-0.5px",
+              }}
+            >
+              ExpertBook
+              <br />
+              Admin Panel
+            </h1>
 
-            <div className="flex items-center gap-3">
-              <span>✔</span>
-              <span>Manage Users & Admins</span>
-            </div>
+            <p
+              style={{
+                margin: "0 0 40px",
+                color: "rgba(255,255,255,0.7)",
+                fontSize: "15px",
+                lineHeight: "1.6",
+              }}
+            >
+              Securely manage experts, bookings, users and platform analytics.
+            </p>
 
-            <div className="flex items-center gap-3">
-              <span>✔</span>
-              <span>View Dashboard Analytics</span>
-            </div>
+            {[
+              "Manage Experts",
+              "Track Bookings",
+              "Manage Users & Admins",
+              "View Dashboard Analytics",
+            ].map((item) => (
+              <div
+                key={item}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "14px",
+                }}
+              >
+                <span
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "11px",
+                    flexShrink: 0,
+                  }}
+                >
+                  ✔
+                </span>
+                <span
+                  style={{ color: "rgba(255,255,255,0.85)", fontSize: "14px" }}
+                >
+                  {item}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center justify-center p-8 lg:p-12">
-          <div className="w-full max-w-md">
-            <div className="mb-8 text-center">
-              <div className="mb-4 text-5xl">🔐</div>
-
-              <h2 className="text-3xl font-bold text-slate-900">
-                Welcome Back
-              </h2>
-
-              <p className="mt-2 text-slate-500">
-                Sign in to continue to the admin dashboard.
-              </p>
-            </div>
-
-            <SignIn
-              routing="hash"
-              afterSignInUrl="/admin"
-              appearance={{
-                elements: {
-                  rootBox: "mx-auto w-full",
-                  card: "shadow-none border-0 rounded-lg bg-transparent",
-                },
+        <div
+          style={{
+            padding: "48px 40px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <div style={{ fontSize: "40px", marginBottom: "12px" }}>🔐</div>
+            <h2
+              style={{
+                margin: "0 0 8px",
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#0F172A",
               }}
-            />
+            >
+              Welcome Back
+            </h2>
+            <p style={{ margin: 0, color: "#64748B", fontSize: "14px" }}>
+              Sign in to continue to the admin dashboard.
+            </p>
           </div>
+
+          <SignIn
+            routing="hash"
+            forceRedirectUrl="/admin"
+            appearance={{
+              elements: {
+                rootBox: "w-full",
+                card: "shadow-none border-0 bg-transparent",
+              },
+            }}
+          />
         </div>
       </div>
     </div>

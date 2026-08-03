@@ -41,15 +41,12 @@ const ExpertList = () => {
     setPage(1);
     fetchExperts(category, 1, search);
   };
-
-  const handleCategoryChange = (e) => {
-    const newCategory = e.target.value;
-    setCategory(newCategory);
+  const handleCategoryChange = (cat) => {
+    setCategory(cat);
     setSearch("");
     setPage(1);
-    fetchExperts(newCategory, 1, "");
+    fetchExperts(cat, 1, "");
   };
-
   const handlePageChange = (newPage) => {
     setPage(newPage);
     fetchExperts(category, newPage, search);
@@ -58,86 +55,260 @@ const ExpertList = () => {
   return (
     <div>
       {/* Hero */}
-      <div className="relative mb-10 overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 px-6 py-14 md:px-12 md:py-20 shadow-lg">
-        {/* Background Blur */}
-        <div className="absolute -top-20 -right-16 h-64 w-64 rounded-full bg-indigo-400/20 blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-violet-400/10 blur-3xl"></div>
+      <div
+        style={{
+          position: "relative",
+          textAlign: "center",
+          padding: "52px 20px 52px",
+          marginBottom: "32px",
+          overflow: "hidden",
+          borderRadius: "24px",
+          background:
+            "linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #15803d 100%)",
+        }}
+      >
+        {/* Pattern */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+            pointerEvents: "none",
+          }}
+        />
 
-        <div className="relative mx-auto max-w-3xl text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-            Find Your Perfect Expert
-          </h1>
+        {/* Glow orbs */}
+        <div
+          style={{
+            position: "absolute",
+            top: "-40px",
+            right: "10%",
+            width: "250px",
+            height: "250px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(34,197,94,0.3) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "-40px",
+            left: "10%",
+            width: "200px",
+            height: "200px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(22,163,74,0.2) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
 
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
-            Book one-on-one sessions with experienced professionals in Design,
-            Engineering, Marketing and Finance.
-          </p>
+        {/* Badge */}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: "999px",
+            padding: "6px 16px",
+            fontSize: "12px",
+            color: "#BBF7D0",
+            fontWeight: "600",
+            marginBottom: "24px",
+            position: "relative",
+          }}
+        >
+          <span
+            style={{
+              width: "6px",
+              height: "6px",
+              background: "#4ADE80",
+              borderRadius: "50%",
+              display: "inline-block",
+              boxShadow: "0 0 8px #4ADE80",
+            }}
+          />
+          Trusted by professionals worldwide
+        </div>
 
-          {/* Search */}
-          <form
-            onSubmit={handleSearch}
-            className="mx-auto mt-10 flex max-w-2xl flex-col gap-3 sm:flex-row"
+        <h1
+          style={{
+            fontSize: "52px",
+            fontWeight: "800",
+            color: "#FFFFFF",
+            lineHeight: "1.08",
+            letterSpacing: "-2px",
+            marginBottom: "20px",
+            position: "relative",
+          }}
+        >
+          Find Your
+          <br />
+          <span
+            style={{
+              background: "linear-gradient(135deg, #4ADE80, #86EFAC)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
           >
+            Perfect Expert
+          </span>
+        </h1>
+
+        <p
+          style={{
+            color: "rgba(255,255,255,0.7)",
+            fontSize: "16px",
+            maxWidth: "420px",
+            margin: "0 auto 40px",
+            lineHeight: "1.7",
+            position: "relative",
+          }}
+        >
+          1-on-1 sessions with vetted professionals in Design, Engineering,
+          Marketing & Finance
+        </p>
+
+        {/* Search */}
+        <form
+          onSubmit={handleSearch}
+          style={{
+            display: "flex",
+            gap: "8px",
+            maxWidth: "520px",
+            margin: "0 auto",
+            position: "relative",
+          }}
+        >
+          <div style={{ flex: 1, position: "relative" }}>
+            <span
+              style={{
+                position: "absolute",
+                left: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#94A3B8",
+              }}
+            >
+              🔍
+            </span>
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search experts..."
-              className="flex-1 rounded-lg border border-white/10 bg-white px-5 py-4 text-slate-700 shadow-lg outline-none transition-all duration-300 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-300"
+              placeholder="Search by expert name..."
+              style={{
+                width: "100%",
+                padding: "14px 16px 14px 44px",
+                background: "#fff",
+                border: "2px solid transparent",
+                borderRadius: "10px",
+                color: "#0F172A",
+                fontSize: "15px",
+                outline: "none",
+                boxSizing: "border-box",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+              }}
+              onFocus={(e) => (e.target.style.borderColor = "#16A34A")}
+              onBlur={(e) => (e.target.style.borderColor = "transparent")}
             />
-
-            <button
-              type="submit"
-              className="rounded-lg bg-white px-8 py-4 font-semibold text-indigo-600 shadow-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-700"
-            >
-              Search
-            </button>
-          </form>
-        </div>
+          </div>
+          <button
+            type="submit"
+            style={{
+              padding: "14px 24px",
+              background: "#fff",
+              color: "#16A34A",
+              border: "none",
+              borderRadius: "10px",
+              fontSize: "15px",
+              fontWeight: "700",
+              cursor: "pointer",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Search
+          </button>
+        </form>
       </div>
 
       {/* AI Assistant */}
       <AIBookingAssistant />
 
-      {/* Filter Bar */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-semibold text-slate-500">
-            Categories
-          </span>
-
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange({ target: { value: cat } })}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
-                category === cat
-                  ? "bg-indigo-600 text-white shadow-md"
-                  : "border border-slate-300 bg-white text-slate-700 hover:border-indigo-400 hover:bg-indigo-50"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
+      {/* Category Filter */}
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          marginBottom: "28px",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        <span style={{ fontSize: "12px", color: "#94A3B8", fontWeight: "500" }}>
+          Filter:
+        </span>
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => handleCategoryChange(cat)}
+            style={{
+              padding: "7px 18px",
+              borderRadius: "999px",
+              border: "1.5px solid",
+              borderColor: category === cat ? "#16A34A" : "#E2E8F0",
+              background: category === cat ? "#DCFCE7" : "#fff",
+              color: category === cat ? "#16A34A" : "#64748B",
+              fontSize: "13px",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "all 0.15s",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
         {(search || category !== "All") && (
           <button
+            type="button"
             onClick={() => {
               setSearch("");
               setCategory("All");
               setPage(1);
               fetchExperts("All", 1, "");
             }}
-            className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+            style={{
+              padding: "7px 16px",
+              borderRadius: "999px",
+              border: "1.5px solid #FCA5A5",
+              background: "#FEF2F2",
+              color: "#DC2626",
+              fontSize: "13px",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "all 0.15s",
+            }}
           >
-            Clear Filters
+            ✕
           </button>
         )}
       </div>
 
       {/* Loading */}
       {loading && (
-        <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: "20px",
+          }}
+        >
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <SkeletonCard key={i} />
           ))}
@@ -146,29 +317,43 @@ const ExpertList = () => {
 
       {/* Error */}
       {error && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-5 py-4 text-red-700 shadow-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">⚠️</span>
-            <span className="font-medium">{error}</span>
-          </div>
+        <div
+          style={{
+            padding: "16px",
+            borderRadius: "10px",
+            border: "1px solid #FCA5A5",
+            background: "#FEF2F2",
+            color: "#DC2626",
+            fontSize: "14px",
+          }}
+        >
+          {error}
         </div>
       )}
 
-      {/* Expert Grid */}
+      {/* Grid */}
       {!loading && !error && (
         <>
           {experts.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 py-20 text-center">
-              <div className="mb-4 text-6xl">🔍</div>
-
-              <h2 className="text-2xl font-bold text-slate-800">
-                No Experts Found
-              </h2>
-
-              <p className="mt-2 text-slate-500">
-                Try another keyword or choose a different category.
+            <div
+              style={{
+                textAlign: "center",
+                padding: "80px",
+                border: "2px dashed #E2E8F0",
+                borderRadius: "16px",
+                background: "#fff",
+              }}
+            >
+              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🔍</div>
+              <p
+                style={{
+                  color: "#64748B",
+                  fontSize: "16px",
+                  marginBottom: "20px",
+                }}
+              >
+                No experts found.
               </p>
-
               <button
                 onClick={() => {
                   setSearch("");
@@ -176,13 +361,29 @@ const ExpertList = () => {
                   setPage(1);
                   fetchExperts("All", 1, "");
                 }}
-                className="mt-6 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-indigo-700"
+                style={{
+                  padding: "10px 24px",
+                  background: "#16A34A",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                }}
               >
                 Reset Filters
               </button>
             </div>
           ) : (
-            <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                gap: "20px",
+                marginBottom: "40px",
+              }}
+            >
               {experts.map((expert) => (
                 <ExpertCard key={expert._id} expert={expert} />
               ))}
@@ -203,12 +404,13 @@ const ExpertList = () => {
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
                 style={{
-                  padding: "10px 20px",
-                  borderRadius: "10px",
-                  border: "1.5px solid #E5E7EB",
-                  background: page === 1 ? "#F9FAFB" : "#fff",
-                  color: page === 1 ? "#9CA3AF" : "#374151",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  border: "1.5px solid #E2E8F0",
+                  background: "#fff",
+                  color: page === 1 ? "#CBD5E1" : "#64748B",
                   cursor: page === 1 ? "not-allowed" : "pointer",
+                  fontSize: "14px",
                   fontWeight: "500",
                 }}
               >
@@ -216,11 +418,12 @@ const ExpertList = () => {
               </button>
               <span
                 style={{
-                  padding: "10px 20px",
-                  background: "#4F46E5",
+                  padding: "8px 16px",
+                  background: "#16A34A",
                   color: "#fff",
-                  borderRadius: "10px",
-                  fontWeight: "600",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "700",
                 }}
               >
                 {page} / {totalPages}
@@ -229,12 +432,13 @@ const ExpertList = () => {
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
                 style={{
-                  padding: "10px 20px",
-                  borderRadius: "10px",
-                  border: "1.5px solid #E5E7EB",
-                  background: page === totalPages ? "#F9FAFB" : "#fff",
-                  color: page === totalPages ? "#9CA3AF" : "#374151",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  border: "1.5px solid #E2E8F0",
+                  background: "#fff",
+                  color: page === totalPages ? "#CBD5E1" : "#64748B",
                   cursor: page === totalPages ? "not-allowed" : "pointer",
+                  fontSize: "14px",
                   fontWeight: "500",
                 }}
               >

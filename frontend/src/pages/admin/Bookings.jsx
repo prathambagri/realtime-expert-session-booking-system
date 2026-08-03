@@ -17,8 +17,8 @@ export default function Bookings() {
     try {
       const data = await getAllBookings();
       setBookings(data);
-    } catch (error) {
-      console.error("Failed to fetch bookings:", error);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -27,99 +27,214 @@ export default function Bookings() {
   const handleUpdateStatus = async (status) => {
     try {
       await updateBookingStatus(selectedBooking._id, status);
-
       await fetchBookings();
-
       setShowModal(false);
       setSelectedBooking(null);
-
-      alert("Booking updated successfully!");
-    } catch (error) {
-      console.error(error);
+      alert("Booking updated!");
+    } catch (err) {
       alert("Failed to update booking.");
     }
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="flex h-60 items-center justify-center">
-        <p className="text-lg font-medium text-slate-500">
-          Loading bookings...
-        </p>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: "80px",
+          color: "#64748B",
+        }}
+      >
+        Loading bookings...
       </div>
     );
-  }
 
   return (
-    <div className="space-y-8">
+    <div>
       {/* Header */}
-      <div className="rounded-xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-500 p-8 text-white shadow-lg">
-        <h1 className="text-3xl font-extrabold tracking-tight">Bookings</h1>
-
-        <p className="mt-2 text-white/80">
+      <div
+        style={{
+          background:
+            "linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #15803d 100%)",
+          borderRadius: "16px",
+          padding: "28px 32px",
+          marginBottom: "24px",
+          color: "#fff",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <h1
+          style={{
+            margin: "0 0 4px",
+            fontSize: "24px",
+            fontWeight: "800",
+            position: "relative",
+          }}
+        >
+          Bookings
+        </h1>
+        <p
+          style={{
+            margin: "0 0 16px",
+            color: "rgba(255,255,255,0.7)",
+            fontSize: "13px",
+            position: "relative",
+          }}
+        >
           Manage all customer bookings from one place.
         </p>
-
-        <div className="mt-6 inline-flex rounded-lg bg-white/15 px-5 py-3 backdrop-blur-sm">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-white/70">
-              Total Bookings
-            </p>
-
-            <p className="text-3xl font-bold">{bookings.length}</p>
-          </div>
+        <div
+          style={{
+            display: "inline-block",
+            background: "rgba(255,255,255,0.15)",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            position: "relative",
+          }}
+        >
+          <p
+            style={{
+              margin: "0 0 2px",
+              fontSize: "10px",
+              color: "rgba(255,255,255,0.6)",
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+            }}
+          >
+            Total Bookings
+          </p>
+          <p style={{ margin: 0, fontSize: "24px", fontWeight: "800" }}>
+            {bookings.length}
+          </p>
         </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-        <table className="w-full border-collapse">
-          <thead className="bg-slate-100">
-            <tr className="text-sm font-semibold uppercase tracking-wide text-slate-600">
-              <th className="p-5 text-left">Customer</th>
-              <th className="p-5 text-left">Expert</th>
-              <th className="p-5 text-left">Date</th>
-              <th className="p-5 text-left">Time</th>
-              <th className="p-5 text-left">Status</th>
-              <th className="p-5 text-center">Action</th>
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "12px",
+          border: "1.5px solid #E2E8F0",
+          overflow: "hidden",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+        }}
+      >
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr
+              style={{
+                background: "#F8FAFC",
+                borderBottom: "1px solid #E2E8F0",
+              }}
+            >
+              {["Customer", "Expert", "Date", "Time", "Status", "Action"].map(
+                (h) => (
+                  <th
+                    key={h}
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: h === "Action" ? "center" : "left",
+                      fontSize: "11px",
+                      fontWeight: "700",
+                      color: "#94A3B8",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    {h}
+                  </th>
+                ),
+              )}
             </tr>
           </thead>
-
           <tbody>
-            {bookings.map((booking) => (
+            {bookings.map((booking, i) => (
               <tr
                 key={booking._id}
-                className="border-t border-slate-100 transition hover:bg-indigo-50/40"
+                style={{
+                  borderTop: i > 0 ? "1px solid #F1F5F9" : "none",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#F0FDF4")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
               >
-                <td className="p-5">
-                  <div>
-                    <p className="font-semibold text-slate-900">
-                      {booking.name}
-                    </p>
-
-                    <p className="text-sm text-slate-500">{booking.email}</p>
-                  </div>
+                <td style={{ padding: "14px 16px" }}>
+                  <p
+                    style={{
+                      margin: "0 0 2px",
+                      fontWeight: "600",
+                      color: "#0F172A",
+                      fontSize: "14px",
+                    }}
+                  >
+                    {booking.name}
+                  </p>
+                  <p style={{ margin: 0, fontSize: "12px", color: "#94A3B8" }}>
+                    {booking.email}
+                  </p>
                 </td>
-
-                <td className="p-5 font-medium text-slate-700">
+                <td
+                  style={{
+                    padding: "14px 16px",
+                    color: "#475569",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}
+                >
                   {booking.expertId?.name}
                 </td>
-
-                <td className="p-5 text-slate-600">{booking.date}</td>
-
-                <td className="p-5 text-slate-600">{booking.timeSlot}</td>
-
-                <td className="p-5">
+                <td
+                  style={{
+                    padding: "14px 16px",
+                    color: "#64748B",
+                    fontSize: "13px",
+                  }}
+                >
+                  {booking.date}
+                </td>
+                <td
+                  style={{
+                    padding: "14px 16px",
+                    color: "#64748B",
+                    fontSize: "13px",
+                  }}
+                >
+                  {booking.timeSlot}
+                </td>
+                <td style={{ padding: "14px 16px" }}>
                   <StatusBadge status={booking.status} />
                 </td>
-
-                <td className="p-5 text-center">
+                <td style={{ padding: "14px 16px", textAlign: "center" }}>
                   <button
                     onClick={() => {
                       setSelectedBooking(booking);
                       setShowModal(true);
                     }}
-                    className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-500 px-4 py-2 text-sm font-semibold text-white shadow transition hover:-translate-y-px hover:shadow-lg"
+                    style={{
+                      padding: "6px 14px",
+                      background: "#DCFCE7",
+                      color: "#15803D",
+                      border: "1px solid #BBF7D0",
+                      borderRadius: "6px",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                    }}
                   >
                     Update
                   </button>
