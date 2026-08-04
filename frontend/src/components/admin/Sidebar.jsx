@@ -51,7 +51,7 @@ export default function Sidebar() {
                 color: "#0F172A",
               }}
             >
-              ExpertBook
+              ExpertConnect
             </p>
             <p style={{ margin: 0, fontSize: "11px", color: "#94A3B8" }}>
               Admin Panel

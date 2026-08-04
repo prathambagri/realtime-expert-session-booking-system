@@ -51,12 +51,17 @@ export default function MainLayout() {
           <span
             style={{
               color: "#0F172A",
-              fontSize: "16px",
+              fontSize: "15px",
               fontWeight: "700",
               letterSpacing: "-0.3px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              maxWidth: "500px",
+              display: "block",
             }}
           >
-            ExpertBook
+            ExpertConnect – AI-Powered Expert Consultation Platform
           </span>
         </Link>
 
