@@ -1,4 +1,4 @@
-# 🎯 AI-Powered Real-Time Expert Session Booking Platform
+# 🎯 ExpertConnect – AI-Powered Expert Consultation Platform
 
 A full-stack real-time expert session booking platform built with **React, Node.js, Express, MongoDB, Socket.IO, Clerk Authentication, and Google Gemini AI**. The platform enables users to discover experts, book live sessions, receive AI-powered recommendations, prepare for sessions with AI, and manage bookings with real-time updates.
 
@@ -339,17 +339,17 @@ VITE_CLERK_PUBLISHABLE_KEY=
 
 # 📸 Screenshots
 
-Add screenshots of:
+### Home Page
 
-- Home Page
-- Expert Details
-- AI Expert Finder
-- Booking Form
-- AI Improve My Problem
-- Booking Confirmation
-- AI Learning Assistant
-- My Bookings
-- Admin Dashboard
+![ExpertConnect Home Page](./screenshots/home.png)
+
+### AI Expert Finder
+
+![AI Expert Finder](./screenshots/ai-expert-finder.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](./screenshots/admin-dashboard.png)
 
 ---
 
